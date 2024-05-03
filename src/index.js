@@ -1,3 +1,4 @@
 import './style.css';
+import './todoitem.js'
 
-alert('Setup successful!')
+alert('Setup successful')
