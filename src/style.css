@@ -1,3 +1,60 @@
-h1 {
-    color: red;
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    border: 1px blue solid;
+    align-items: center;
+    font-size: 2.5rem;
+}
+
+.content {
+    display: flex;
+}
+
+.main-panel {
+    display: flex;
+    flex-direction: column;
+    min-height: 90vh;
+    border: 1px red solid;
+    flex: 1;
+    padding: 30px 50px;
+}
+
+.banner {
+    border: 1px green solid;
+    height: 60px;
+    font-size: 2rem;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.menu span {
+    border: 1px red solid;
+    margin-left: 8px;
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu span img {
+    width: 20px;
+}
+
+.side-panel {
+    width: 350px;
+    border: 1px purple solid;
+    padding: 12px 24px;
+}
+
+.home h2, .projects h2 {
+    border-bottom: 5px orange solid;
 }
