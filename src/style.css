@@ -28,15 +28,15 @@ header {
 }
 
 .banner {
-    border: 1px green solid;
+    background-color: #90CAF9;
     height: 60px;
-    font-size: 2rem;
+    font-size: 2.5rem;
     padding: 20px;
     display: flex;
     align-items: center;
 }
 
-.menu span {
+.menu span, .theme span {
     border: 1px red solid;
     margin-left: 8px;
     padding: 8px;
@@ -49,6 +49,20 @@ header {
     width: 20px;
 }
 
+.theme span img{
+    width: 30px;
+}
+
+.logo-section {
+    display: flex;
+    justify-content: center;
+    width: 40px;
+}
+
+.logo-section span:nth-child(3) {
+    color: #90CAF9;
+}
+
 .side-panel {
     width: 350px;
     border: 1px purple solid;
@@ -56,5 +70,5 @@ header {
 }
 
 .home h2, .projects h2 {
-    border-bottom: 5px orange solid;
+    border-bottom: 5px #3F51B5 solid;
 }

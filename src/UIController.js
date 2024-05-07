@@ -1,4 +1,6 @@
 import menuIcon from './menu.png';
+import logoIcon from  './logo.png';
+import moonIcon from './moon.png';
 
 function RenderHeader() {
     const header = document.querySelector('.page-header');
@@ -12,10 +14,25 @@ function RenderHeader() {
     menu.appendChild(menuSpan);
 
     const logoSection = document.createElement('div');
-    logoSection.textContent = 'DoTheNeedful';
+    logoSection.classList.add('logo-section');
+    const logoImage = document.createElement('img');
+    logoImage.src = logoIcon;
+    const logoSpan = document.createElement('span');
+    logoSpan.textContent = 'Do';
+    const logoSpan2 = document.createElement('span');
+    logoSpan2.textContent = 'TheNeedful';
+    logoSection.appendChild(logoImage);
+    logoSection.appendChild(logoSpan);
+    logoSection.appendChild(logoSpan2);
+
 
     const toggleTheme = document.createElement('div');
-    toggleTheme.textContent = 'toggle theme here';
+    toggleTheme.classList.add('theme');
+    const themeImage = document.createElement('img');
+    themeImage.src = moonIcon;
+    const themeSpan = document.createElement('span');
+    themeSpan.appendChild(themeImage);
+    toggleTheme.appendChild(themeSpan);
 
     header.appendChild(menu);
     header.appendChild(logoSection);
