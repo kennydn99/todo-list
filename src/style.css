@@ -37,12 +37,19 @@ header {
 }
 
 .menu span, .theme span {
-    border: 1px red solid;
-    margin-left: 8px;
-    padding: 8px;
+    margin: 0 8px;
     display: flex;
     justify-content: center;
     align-items: center;
+    box-sizing: border-box;
+    border-radius: 5px;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+}
+
+.menu span:hover, .theme span:hover {
+    background-color: rgb(201, 201, 201);
 }
 
 .menu span img {
@@ -71,4 +78,8 @@ header {
 
 .home h2, .projects h2 {
     border-bottom: 5px #3F51B5 solid;
+}
+
+.hidden {
+    display: none;
 }

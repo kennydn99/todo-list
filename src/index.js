@@ -1,10 +1,11 @@
 import './style.css';
 import createTodoItem from './todoitem.js';
 import createTodoList from './todolist.js';
-import {RenderHeader, RenderContent} from './UIController.js';
+import {RenderHeader, RenderContent, ToggleSidePanel} from './UIController.js';
 
 RenderHeader();
 RenderContent();
+ToggleSidePanel();
 
 const task = createTodoItem('Laundry', 'wash, dry and fold clothes', '', 1);
 task.updatePriority(2);

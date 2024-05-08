@@ -10,6 +10,7 @@ function RenderHeader() {
     const menuImage = document.createElement('img');
     menuImage.src = menuIcon;
     const menuSpan = document.createElement('span');
+    menuSpan.classList.add('toggle-menu');
     menuSpan.appendChild(menuImage);
     menu.appendChild(menuSpan);
 
@@ -82,8 +83,19 @@ function RenderContent() {
     content.appendChild(mainPanel);
 
     body.appendChild(content);
+}
 
+function ToggleSidePanel() {
+    const sidePanel = document.querySelector('.side-panel');
+    const menuButton = document.querySelector('.toggle-menu');
+    menuButton.addEventListener('click', () => {
+        if (sidePanel.classList.contains('hidden')) {
+            sidePanel.classList.remove('hidden');
+        } else {
+            sidePanel.classList.add('hidden');
+        }
+    });
 }
 
 
-export {RenderHeader, RenderContent};
+export {RenderHeader, RenderContent, ToggleSidePanel};
