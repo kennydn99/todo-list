@@ -3,7 +3,7 @@
 // (title, description, due date, priority, notes, checklist), updating them, and deleting them.
 
 class TodoItem {
-    constructor(title, description, dueDate, priority, complete) {
+    constructor(title, description, dueDate, priority) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;

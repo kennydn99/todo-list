@@ -4,14 +4,15 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
+    background-color: #e9e9e9;
 }
 
 header {
     display: flex;
     justify-content: space-between;
-    border: 1px blue solid;
     align-items: center;
     font-size: 2.5rem;
+    border-bottom: 2px #90CAF9 solid;
 }
 
 .content {
@@ -22,7 +23,6 @@ header {
     display: flex;
     flex-direction: column;
     min-height: 90vh;
-    border: 1px red solid;
     flex: 1;
     padding: 30px 50px;
 }
@@ -72,8 +72,8 @@ header {
 
 .side-panel {
     width: 350px;
-    border: 1px purple solid;
     padding: 12px 24px;
+    background-color: #fffefe;
 }
 
 .home h2, .projects h2 {

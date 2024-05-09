@@ -1,6 +1,12 @@
-import menuIcon from './menu.png';
-import logoIcon from  './logo.png';
-import moonIcon from './moon.png';
+import menuIcon from './assets/menu.png';
+import logoIcon from  './assets/logo.png';
+import moonIcon from './assets/moon.png';
+
+
+export default function RenderHomePage() {
+    RenderHeader();
+    RenderContent();
+}
 
 function RenderHeader() {
     const header = document.querySelector('.page-header');
@@ -46,7 +52,7 @@ function RenderContent() {
     const content = document.createElement('div');
     content.classList.add('content');
 
-    //side panel - left side
+    //side panel
     const sidePanel = document.createElement('div');
     sidePanel.classList.add('side-panel');
 
@@ -60,13 +66,17 @@ function RenderContent() {
     projects.classList.add('projects');
     const projectsHeading = document.createElement('h2')
     projectsHeading.textContent = 'My Projects';
+    const addProjectButton = document.createElement('button');
+    addProjectButton.classList.add('add-project-btn');
+    addProjectButton.textContent = 'Add Project';
     projects.appendChild(projectsHeading);
+    projects.appendChild(addProjectButton);
 
     sidePanel.appendChild(home);
     sidePanel.appendChild(projects);
     content.appendChild(sidePanel);
     
-    //main panel - right side
+    //main panel
     const mainPanel = document.createElement('div');
     mainPanel.classList.add('main-panel');
     
@@ -84,18 +94,3 @@ function RenderContent() {
 
     body.appendChild(content);
 }
-
-function ToggleSidePanel() {
-    const sidePanel = document.querySelector('.side-panel');
-    const menuButton = document.querySelector('.toggle-menu');
-    menuButton.addEventListener('click', () => {
-        if (sidePanel.classList.contains('hidden')) {
-            sidePanel.classList.remove('hidden');
-        } else {
-            sidePanel.classList.add('hidden');
-        }
-    });
-}
-
-
-export {RenderHeader, RenderContent, ToggleSidePanel};
