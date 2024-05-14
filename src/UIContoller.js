@@ -30,40 +30,46 @@ function ScreenController() {
         createProjectForm();
     });
 
+    let isProjectFormOpen = false;
     function createProjectForm() {
-        const projects = document.querySelector('.projects');
-        
-        //make form
-        const projectForm = document.createElement('form');
-        projectForm.classList.add('project-form');
-        
-        //make project icon
-        const projectIcon = document.createElement('img');
-        projectIcon.src = ProjectImage;
-        projectForm.appendChild(projectIcon);
+        if (!isProjectFormOpen) {
 
-        //make input field
-        const inputField = document.createElement('div');
-        const projectInput = document.createElement('input');
-        projectInput.placeholder = 'Name';
-        inputField.appendChild(projectInput);
+            const projects = document.querySelector('.projects');
+            
+            //make form
+            const projectForm = document.createElement('form');
+            projectForm.classList.add('project-form');
+            
+            //make project icon
+            const projectIcon = document.createElement('img');
+            projectIcon.src = ProjectImage;
+            projectForm.appendChild(projectIcon);
 
-        //form buttons
-        const projectFormButtons = document.createElement('div');
-        projectFormButtons.classList.add('project-form-buttons');
-        const addButton = document.createElement('button');
-        addButton.type = 'submit';
-        addButton.textContent = "Add";
-        const cancelButton = document.createElement('button');
-        cancelButton.textContent = "Cancel";
-        projectFormButtons.appendChild(addButton);
-        projectFormButtons.appendChild(cancelButton);
-        inputField.appendChild(projectFormButtons);
+            //make input field
+            const inputField = document.createElement('div');
+            const projectInput = document.createElement('input');
+            projectInput.placeholder = 'Name';
+            inputField.appendChild(projectInput);
 
-        projectForm.appendChild(inputField);
-        projectForm.appendChild(projectFormButtons);
+            //form buttons
+            const projectFormButtons = document.createElement('div');
+            projectFormButtons.classList.add('project-form-buttons');
+            const addButton = document.createElement('button');
+            addButton.type = 'submit';
+            addButton.textContent = "Add";
+            const cancelButton = document.createElement('button');
+            cancelButton.textContent = "Cancel";
+            projectFormButtons.appendChild(addButton);
+            projectFormButtons.appendChild(cancelButton);
+            inputField.appendChild(projectFormButtons);
 
-        projects.appendChild(projectForm);
+            projectForm.appendChild(inputField);
+            projectForm.appendChild(projectFormButtons);
+
+            projects.appendChild(projectForm);
+
+            isProjectFormOpen = true;
+        }
     }
     
 }
