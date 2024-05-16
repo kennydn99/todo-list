@@ -2,6 +2,7 @@
 
 import RenderHomePage from "./home";
 import ProjectImage from './assets/project.png';
+import listModule from './todolist';
 
 
 function ScreenController() {
@@ -33,7 +34,6 @@ function ScreenController() {
     let isProjectFormOpen = false;
     function createProjectForm() {
         if (!isProjectFormOpen) {
-
             const projects = document.querySelector('.projects');
             
             //make form
@@ -49,6 +49,7 @@ function ScreenController() {
             const inputField = document.createElement('div');
             const projectInput = document.createElement('input');
             projectInput.placeholder = 'Name';
+            projectInput.required = true;
             inputField.appendChild(projectInput);
 
             //form buttons
@@ -58,6 +59,7 @@ function ScreenController() {
             addButton.type = 'submit';
             addButton.textContent = "Add";
             const cancelButton = document.createElement('button');
+            cancelButton.type = 'button';
             cancelButton.textContent = "Cancel";
             projectFormButtons.appendChild(addButton);
             projectFormButtons.appendChild(cancelButton);
@@ -68,7 +70,72 @@ function ScreenController() {
 
             projects.appendChild(projectForm);
 
+            //event listener for form submit
+            projectForm.addEventListener('submit', (e) => {
+                const projectName = projectInput.value;
+                e.preventDefault();
+                createProjectDiv(projectName);
+                closeProjectForm();
+                //need to create todoItem as well
+                listModule.createTodoList(projectName);
+            });
+
+            cancelButton.addEventListener('click', () => {
+                closeProjectForm();
+            });
+
             isProjectFormOpen = true;
+        }
+    }
+
+    function createProjectDiv(projectName) {
+        const projectsContainer = document.querySelector('.projects');
+
+        // Create project div
+        const projectDiv = document.createElement('div');
+        projectDiv.classList.add('project-div');
+
+        //create & put project icon
+        const projectIcon = document.createElement('img');
+        projectIcon.src = ProjectImage;
+        projectDiv.appendChild(projectIcon);
+
+        // Create project name span
+        const projectNameSpan = document.createElement('span');
+        projectNameSpan.textContent = projectName;
+        projectDiv.appendChild(projectNameSpan);
+
+        // Create edit button
+        const editButton = document.createElement('button');
+        editButton.textContent = 'Edit';
+        projectDiv.appendChild(editButton);
+
+        // Create delete button
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        projectDiv.appendChild(deleteButton);
+
+        // Append project div to projects container
+        projectsContainer.appendChild(projectDiv);
+
+        // Event listeners for edit and delete buttons
+        editButton.addEventListener('click', () => {
+            // Handle edit button click
+            console.log('Edit button clicked');
+        });
+
+        deleteButton.addEventListener('click', () => {
+            // Handle delete button click
+            
+            projectsContainer.removeChild(projectDiv);
+        });
+    }
+
+    function closeProjectForm() {
+        const projectForm = document.querySelector('.project-form');
+        if(projectForm) {
+            projectForm.remove();
+            isProjectFormOpen = false;
         }
     }
     

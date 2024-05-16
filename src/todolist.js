@@ -1,5 +1,8 @@
+let lists = [];
+
 class TodoList {
     constructor(name) {
+        this.id = Date.now().toString;
         this.name = name;
         this.taskList = [];
     }
@@ -18,16 +21,19 @@ class TodoList {
     updateName(newName) {
         this.name = newName;
     }
-
-    deleteTodoList() {
-        // Perform any cleanup or additional actions before deleting the todo item
-        // For now, let's just log a message
-        console.log(`Deleting todo list: ${this.name}`);
-    }
 }
 
 const createTodoList = (name) => {
-    return new TodoList(name);
+    const myTodoList = new TodoList(name);
+    lists.push(myTodoList);
+    console.log(lists);
 }
 
-export default createTodoList;
+const deleteTodoList = (listId) => {
+    // Perform any cleanup or additional actions before deleting the todo item
+    // For now, let's just log a message
+    console.log(`Deleting todo list: ${this.name}, ${this.id}`);
+    
+}
+
+export default {lists, createTodoList, deleteTodoList};
