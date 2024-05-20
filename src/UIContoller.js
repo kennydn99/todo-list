@@ -74,10 +74,11 @@ function ScreenController() {
             projectForm.addEventListener('submit', (e) => {
                 const projectName = projectInput.value;
                 e.preventDefault();
-                createProjectDiv(projectName);
+                //create todoItem
                 closeProjectForm();
-                //need to create todoItem as well
                 listModule.createTodoList(projectName);
+                console.log(listModule.lists);
+                renderTodoLists(listModule.lists);
             });
 
             cancelButton.addEventListener('click', () => {
@@ -88,12 +89,25 @@ function ScreenController() {
         }
     }
 
-    function createProjectDiv(projectName) {
+    function renderTodoLists(lists) {
+        lists.forEach((list, index) => {
+            if (!list.rendered) {
+                createProjectDiv(list);
+                list.rendered = true;
+            }
+            console.log(list.name, index);
+        })
+    }
+
+    function createProjectDiv(list) {
         const projectsContainer = document.querySelector('.projects');
 
+        const projectListContainer = document.createElement('div');
+        projectListContainer.classList.add('project-list-container');
         // Create project div
         const projectDiv = document.createElement('div');
         projectDiv.classList.add('project-div');
+        projectDiv.dataset.listId = list.id;
 
         //create & put project icon
         const projectIcon = document.createElement('img');
@@ -102,7 +116,7 @@ function ScreenController() {
 
         // Create project name span
         const projectNameSpan = document.createElement('span');
-        projectNameSpan.textContent = projectName;
+        projectNameSpan.textContent = list.name;
         projectDiv.appendChild(projectNameSpan);
 
         // Create edit button
@@ -126,7 +140,7 @@ function ScreenController() {
 
         deleteButton.addEventListener('click', () => {
             // Handle delete button click
-            
+            console.log(projectDiv);
             projectsContainer.removeChild(projectDiv);
         });
     }

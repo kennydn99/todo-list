@@ -2,7 +2,7 @@ let lists = [];
 
 class TodoList {
     constructor(name) {
-        this.id = Date.now().toString;
+        this.id = Date.now().toString();
         this.name = name;
         this.taskList = [];
     }
@@ -26,14 +26,17 @@ class TodoList {
 const createTodoList = (name) => {
     const myTodoList = new TodoList(name);
     lists.push(myTodoList);
-    console.log(lists);
 }
 
 const deleteTodoList = (listId) => {
     // Perform any cleanup or additional actions before deleting the todo item
     // For now, let's just log a message
     console.log(`Deleting todo list: ${this.name}, ${this.id}`);
-    
+    const index = getListIndex(listId);
+    console.log(`list index ${index}`);
+    lists.splice(index, 1);
 }
+
+const getListIndex = (listId) => lists.find((list) => list.id === listId);
 
 export default {lists, createTodoList, deleteTodoList};
