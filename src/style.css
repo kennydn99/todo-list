@@ -101,3 +101,24 @@ header {
     display: flex;
     gap: 6px;
 }
+
+.project-div {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 50px;
+    background-color: aliceblue;
+    padding: 0 30px;
+    margin: 8px 0;
+}
+
+.project-div span {
+    display: flex;
+    flex: 1;
+    padding-left: 8px;
+}
+
+.project-btn-container {
+    display: flex;
+    gap: 8px;
+}

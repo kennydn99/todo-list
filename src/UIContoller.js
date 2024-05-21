@@ -108,7 +108,7 @@ function ScreenController() {
         const projectDiv = document.createElement('div');
         projectDiv.classList.add('project-div');
         projectDiv.dataset.listId = list.id;
-
+        
         //create & put project icon
         const projectIcon = document.createElement('img');
         projectIcon.src = ProjectImage;
@@ -119,16 +119,21 @@ function ScreenController() {
         projectNameSpan.textContent = list.name;
         projectDiv.appendChild(projectNameSpan);
 
+        //create button container
+        const projectDivButtonContainer = document.createElement('div');
+        projectDivButtonContainer.classList.add('project-btn-container');
+
         // Create edit button
         const editButton = document.createElement('button');
         editButton.textContent = 'Edit';
-        projectDiv.appendChild(editButton);
+        projectDivButtonContainer.appendChild(editButton);
 
         // Create delete button
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Delete';
-        projectDiv.appendChild(deleteButton);
+        projectDivButtonContainer.appendChild(deleteButton);
 
+        projectDiv.appendChild(projectDivButtonContainer);
         // Append project div to projects container
         projectsContainer.appendChild(projectDiv);
 
@@ -136,11 +141,59 @@ function ScreenController() {
         editButton.addEventListener('click', () => {
             // Handle edit button click
             console.log('Edit button clicked');
+            //remove project name span
+            //replace with input, placeholder has current name span
+            const editInput = document.createElement('input');
+            editInput.type = 'text';
+            editInput.placeholder = projectNameSpan.textContent;
+            projectDiv.replaceChild(editInput, projectNameSpan);
+            projectDiv.style.padding = '0px';
+
+            //remove edit/delete buttons & replace with update/cancel
+            projectDivButtonContainer.removeChild(editButton);
+            projectDivButtonContainer.removeChild(deleteButton);
+
+            const exitButton = document.createElement('button');
+            exitButton.innerHTML = '&#10006';
+            projectDivButtonContainer.appendChild(exitButton);
+
+            exitButton.addEventListener('click', () => {
+                projectDiv.replaceChild(projectNameSpan, editInput);
+                projectDivButtonContainer.removeChild(exitButton);
+                projectDivButtonContainer.appendChild(editButton);
+                projectDivButtonContainer.appendChild(deleteButton);
+                projectDiv.style.padding = '0px 30px';
+            });
+
+            //listmodule update name to new input value when clicking update
+            editInput.addEventListener('blur', () => {
+                projectNameSpan.textContent = editInput.value || projectNameSpan.textContent;
+                listModule.updateName(projectDiv.dataset.listId, projectNameSpan.textContent);
+                projectDiv.replaceChild(projectNameSpan, editInput);
+                projectDivButtonContainer.removeChild(exitButton);
+                projectDivButtonContainer.appendChild(editButton);
+                projectDivButtonContainer.appendChild(deleteButton);
+                projectDiv.style.padding = '0px 30px';
+            });
+
+            editInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    projectNameSpan.textContent = editInput.value || projectNameSpan.textContent;
+                    listModule.updateName(projectDiv.dataset.listId, projectNameSpan.textContent);
+                    projectDiv.replaceChild(projectNameSpan, editInput);
+                    projectDivButtonContainer.removeChild(exitButton);
+                    projectDivButtonContainer.appendChild(editButton);
+                    projectDivButtonContainer.appendChild(deleteButton);
+                    projectDiv.style.padding = '0px 30px';
+                }
+            });
+
+            editInput.focus();
         });
 
         deleteButton.addEventListener('click', () => {
             // Handle delete button click
-            console.log(projectDiv);
+            listModule.deleteTodoList(projectDiv.dataset.listId);
             projectsContainer.removeChild(projectDiv);
         });
     }
@@ -151,6 +204,15 @@ function ScreenController() {
             projectForm.remove();
             isProjectFormOpen = false;
         }
+    }
+
+    function handleEditProject(projectDiv) {
+        console.log('handle the edit button event');
+        const projectNameSpan = projectDiv.querySelector('span');
+        const currentName = projectNameSpan.textContent;
+        console.log(currentName);
+
+        const editProjectName = document.createElement('input');
     }
     
 }

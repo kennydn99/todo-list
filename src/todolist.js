@@ -17,10 +17,6 @@ class TodoList {
             this.taskList.splice(index, 1);
         }
     }
-
-    updateName(newName) {
-        this.name = newName;
-    }
 }
 
 const createTodoList = (name) => {
@@ -31,12 +27,18 @@ const createTodoList = (name) => {
 const deleteTodoList = (listId) => {
     // Perform any cleanup or additional actions before deleting the todo item
     // For now, let's just log a message
-    console.log(`Deleting todo list: ${this.name}, ${this.id}`);
     const index = getListIndex(listId);
     console.log(`list index ${index}`);
     lists.splice(index, 1);
 }
 
-const getListIndex = (listId) => lists.find((list) => list.id === listId);
+const updateName = (listId, newName) => {
+    const list = getList(listId);
+    list.name = newName;
+}
 
-export default {lists, createTodoList, deleteTodoList};
+const getListIndex = (listId) => lists.findIndex((list) => list.id === listId);
+
+const getList = (listId) => lists.find((list) => list.id === listId);
+
+export default {lists, createTodoList, deleteTodoList, updateName};
