@@ -1,7 +1,6 @@
 import './style.css';
-import createTodoItem from './todoitem.js';
-import createTodoList from './todolist.js';
-import { ScreenController } from './UIContoller.js';
+import { UIController } from './UIController.js';
 
-ScreenController();
+// Initialize the UI by calling the init method
+UIController.init();
 

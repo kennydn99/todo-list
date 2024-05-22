@@ -41,4 +41,4 @@ const getListIndex = (listId) => lists.findIndex((list) => list.id === listId);
 
 const getList = (listId) => lists.find((list) => list.id === listId);
 
-export default {lists, createTodoList, deleteTodoList, updateName};
+export default {lists, createTodoList, deleteTodoList, updateName, getList};

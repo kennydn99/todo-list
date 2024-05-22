@@ -86,7 +86,9 @@ function RenderContent() {
 
     const taskSection = document.createElement('div');
     taskSection.classList.add('task-section');
-    taskSection.textContent = "Tasks listed here";
+    const addTaskButton = document.createElement('button');
+    addTaskButton.textContent = 'Add Task';
+    taskSection.appendChild(addTaskButton);
 
     mainPanel.appendChild(banner);
     mainPanel.appendChild(taskSection);

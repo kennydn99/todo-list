@@ -107,9 +107,21 @@ header {
     justify-content: space-evenly;
     align-items: center;
     height: 50px;
-    background-color: aliceblue;
     padding: 0 30px;
     margin: 8px 0;
+}
+
+.project-div:hover {
+    background-color: #e9e9e9;
+    cursor: pointer;
+}
+
+.selected-project {
+    background-color: #90CAF9;
+}
+
+.project-div.selected-project:hover {
+    background-color: #77a5ca;
 }
 
 .project-div span {
