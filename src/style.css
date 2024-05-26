@@ -134,3 +134,52 @@ header {
     display: flex;
     gap: 8px;
 }
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    border: 2px #77a5ca solid;
+    padding: 8px;
+    background-color: #fffefe;
+}
+
+#task-title, textarea, .date-priority-container{
+    margin-bottom: 8px;
+}
+
+.date-priority-container {
+    display: flex;
+    align-items: center;
+    height: 30px;
+}
+
+.date-container, .priority-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.modal-btn-container {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+textarea {
+    max-height: 100px;
+    min-height: 50px;
+    overflow: auto;
+    resize: vertical;
+}
+
+#task-date-input {
+    display: flex;
+    height: 24px;
+}
+
+#task-priority-select{
+    display: flex;
+    flex: 1;
+    height: 24px;
+}

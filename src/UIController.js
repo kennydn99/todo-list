@@ -37,6 +37,9 @@ const UIController = (() => {
     // Flag to track if the project form is open
     let isProjectFormOpen = false;
 
+    // Flag to track if the project form is open
+    let isTaskModalOpen = false;
+
     // Handle click event for the "Add Project" button
     const handleAddProjectClick = () => {
         if (!isProjectFormOpen) {
@@ -46,8 +49,9 @@ const UIController = (() => {
 
     // Handle click event for the "Add Task" Button
     const handleAddTaskClick = () => {
-        console.log('Create & display task input form');
-        createTaskModal();
+        if(!isTaskModalOpen) {
+            createTaskModal();
+        }
     }
 
     // Create & display the task creation form
@@ -64,23 +68,37 @@ const UIController = (() => {
         const taskTitleInput = document.createElement('input');
         taskTitleInput.required = true;
         taskTitleInput.id = 'task-title';
+        taskTitleInput.placeholder = 'Enter Task Name...';
         const taskTitleLabel = document.createElement('label');
         taskTitleLabel.textContent = 'Title:';
         taskTitleLabel.htmlFor = taskTitleInput.id;
 
         // Description
         const taskDescription = document.createElement('textarea');
+        taskDescription.placeholder = 'Enter Task Description Here...'
         const taskDescriptionLabel = document.createElement('label');
         taskDescriptionLabel.textContent = 'Description:';
 
+        // select container
+        const selectContainer = document.createElement('div');
+        selectContainer.classList.add('date-priority-container');
+
         // Date
+        const dateContainer = document.createElement('div');
+        dateContainer.classList.add('date-container');
         const taskDate = document.createElement('input');
         taskDate.type = 'date';
         taskDate.id = 'task-date-input';
         const taskDateLabel = document.createElement('label');
         taskDateLabel.textContent = 'Date:';
+        dateContainer.appendChild(taskDateLabel);
+        dateContainer.appendChild(taskDate);
 
         // Priority
+        const priorityContainer = document.createElement('div');
+        priorityContainer.classList.add('priority-container');
+        const taskPriorityLabel = document.createElement('label');
+        taskPriorityLabel.textContent = 'Priority:';
         const taskPriority = document.createElement('select');
         taskPriority.id = 'task-priority-select';
         const priorities = ['Low', 'Medium', 'High'];
@@ -90,7 +108,11 @@ const UIController = (() => {
             option.text = priorities[i];
             taskPriority.appendChild(option);
         }
+        priorityContainer.appendChild(taskPriorityLabel);
+        priorityContainer.appendChild(taskPriority);
 
+        selectContainer.appendChild(dateContainer);
+        selectContainer.appendChild(priorityContainer);
         // Buttons
         const modalButtonContainer = document.createElement('div');
         modalButtonContainer.classList.add('modal-btn-container');
@@ -106,12 +128,19 @@ const UIController = (() => {
         modalContent.appendChild(taskTitleInput);
         modalContent.appendChild(taskDescriptionLabel);
         modalContent.appendChild(taskDescription);
-        modalContent.appendChild(taskDateLabel);
-        modalContent.appendChild(taskDate);
-        modalContent.appendChild(taskPriority);
+        modalContent.appendChild(selectContainer);
         modalContent.appendChild(modalButtonContainer);
         taskModal.appendChild(modalContent);
         taskSection.appendChild(taskModal);
+
+        // event listener for submitting modal
+
+        // event listener for canceling / closing modal
+        cancelTaskButton.addEventListener('click', () => {
+            closeTaskModal();
+        });
+
+        isTaskModalOpen = true;
     };
 
     // Create and display the project creation form
@@ -178,6 +207,15 @@ const UIController = (() => {
             isProjectFormOpen = false;
         }
     };
+
+    // Lcose ane remove task modal
+    const closeTaskModal = () => {
+        const taskModal = document.querySelector('.task-modal');
+        if (taskModal) {
+            taskModal.remove();
+            isTaskModalOpen = false;
+        }
+    }
 
     // Render the list of todo lists
     const renderTodoLists = (lists) => {
