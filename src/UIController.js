@@ -28,6 +28,10 @@ const UIController = (() => {
     const setupEventListeners = () => {
         const addProjectButton = document.querySelector('.add-project-btn');
         addProjectButton.addEventListener('click', handleAddProjectClick);
+
+        // Add Task to Project
+        const addTaskButton = document.querySelector('.add-task-btn');
+        addTaskButton.addEventListener('click', handleAddTaskClick);
     };
 
     // Flag to track if the project form is open
@@ -35,10 +39,79 @@ const UIController = (() => {
 
     // Handle click event for the "Add Project" button
     const handleAddProjectClick = () => {
-        console.log('Add project button clicked');
         if (!isProjectFormOpen) {
             createProjectForm();
         }
+    };
+
+    // Handle click event for the "Add Task" Button
+    const handleAddTaskClick = () => {
+        console.log('Create & display task input form');
+        createTaskModal();
+    }
+
+    // Create & display the task creation form
+    const createTaskModal = () => {
+        const taskSection = document.querySelector('.task-section');
+
+        // Create form element
+        const taskModal = document.createElement('div');
+        taskModal.classList.add('task-modal');
+
+        // Create and add input for forms details
+        const modalContent = document.createElement('div');
+        modalContent.classList.add('modal-content');
+        const taskTitleInput = document.createElement('input');
+        taskTitleInput.required = true;
+        taskTitleInput.id = 'task-title';
+        const taskTitleLabel = document.createElement('label');
+        taskTitleLabel.textContent = 'Title:';
+        taskTitleLabel.htmlFor = taskTitleInput.id;
+
+        // Description
+        const taskDescription = document.createElement('textarea');
+        const taskDescriptionLabel = document.createElement('label');
+        taskDescriptionLabel.textContent = 'Description:';
+
+        // Date
+        const taskDate = document.createElement('input');
+        taskDate.type = 'date';
+        taskDate.id = 'task-date-input';
+        const taskDateLabel = document.createElement('label');
+        taskDateLabel.textContent = 'Date:';
+
+        // Priority
+        const taskPriority = document.createElement('select');
+        taskPriority.id = 'task-priority-select';
+        const priorities = ['Low', 'Medium', 'High'];
+        for (let i = 0; i < priorities.length; i++) {
+            let option = document.createElement('option');
+            option.value = priorities[i];
+            option.text = priorities[i];
+            taskPriority.appendChild(option);
+        }
+
+        // Buttons
+        const modalButtonContainer = document.createElement('div');
+        modalButtonContainer.classList.add('modal-btn-container');
+        const submitTaskButton = document.createElement('button');
+        submitTaskButton.textContent = 'Add';
+        submitTaskButton.type = 'submit';
+        const cancelTaskButton = document.createElement('button');
+        cancelTaskButton.textContent = 'Cancel';
+        modalButtonContainer.appendChild(submitTaskButton);
+        modalButtonContainer.appendChild(cancelTaskButton);
+
+        modalContent.appendChild(taskTitleLabel);
+        modalContent.appendChild(taskTitleInput);
+        modalContent.appendChild(taskDescriptionLabel);
+        modalContent.appendChild(taskDescription);
+        modalContent.appendChild(taskDateLabel);
+        modalContent.appendChild(taskDate);
+        modalContent.appendChild(taskPriority);
+        modalContent.appendChild(modalButtonContainer);
+        taskModal.appendChild(modalContent);
+        taskSection.appendChild(taskModal);
     };
 
     // Create and display the project creation form
@@ -190,12 +263,6 @@ const UIController = (() => {
             cancelEdit(projectDiv, projectNameSpan, editInput, editButton, deleteButton, exitButton);
         });
 
-        // Event listener to update project name on input blur
-        editInput.addEventListener('blur', () => {
-            updateProjectName(projectDiv, projectNameSpan, editInput, list);
-            resetButtons(projectDivButtonContainer, editButton, deleteButton, exitButton);
-        });
-
         // Event listener to update project name on Enter key press
         editInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
@@ -215,7 +282,6 @@ const UIController = (() => {
 
     // Handle click event for a project div to select the project
     const handleProjectDivClick = (projectDiv, list) => {
-        const banner = document.querySelector('.banner');
         const projectDivs = document.querySelectorAll('.project-div');
 
         // Unselect all project divs
@@ -233,7 +299,7 @@ const UIController = (() => {
         if (selectedTodoList) {
             selectedTodoList.selected = true;
             projectDiv.classList.add('selected-project');
-            banner.textContent = selectedTodoList.name;
+            updateBanner(selectedTodoList.name);
         }
     };
 
@@ -252,6 +318,7 @@ const UIController = (() => {
         projectNameSpan.textContent = editInput.value || projectNameSpan.textContent;
         listModule.updateName(projectDiv.dataset.listId, projectNameSpan.textContent);
         projectDiv.replaceChild(projectNameSpan, editInput);
+        updateBanner(projectNameSpan.textContent);
     };
 
     // Reset buttons to Edit and Delete after editing
@@ -261,6 +328,11 @@ const UIController = (() => {
         container.appendChild(deleteButton);
         container.parentElement.style.padding = '0px 30px';
     };
+
+    const updateBanner = (projectName) => {
+        const banner = document.querySelector('.banner');
+        banner.textContent = projectName;
+    }
 
     return {
         init,

@@ -87,10 +87,11 @@ function RenderContent() {
     const taskSection = document.createElement('div');
     taskSection.classList.add('task-section');
     const addTaskButton = document.createElement('button');
+    addTaskButton.classList.add('add-task-btn');
     addTaskButton.textContent = 'Add Task';
-    taskSection.appendChild(addTaskButton);
-
+    
     mainPanel.appendChild(banner);
+    mainPanel.appendChild(addTaskButton);
     mainPanel.appendChild(taskSection);
     content.appendChild(mainPanel);
 
