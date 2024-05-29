@@ -37,8 +37,15 @@ const updateName = (listId, newName) => {
     list.name = newName;
 }
 
+const addTodoItemtoList = (listId, todoItem) => {
+    const list = getList(listId);
+    list.addTodoItem(todoItem);
+}
+
 const getListIndex = (listId) => lists.findIndex((list) => list.id === listId);
 
 const getList = (listId) => lists.find((list) => list.id === listId);
 
-export default {lists, createTodoList, deleteTodoList, updateName, getList};
+const getSelectedList = () => lists.find((list) => list.selected);
+
+export default {lists, createTodoList, deleteTodoList, updateName, getList, getSelectedList, addTodoItemtoList};

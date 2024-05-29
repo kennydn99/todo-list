@@ -3,6 +3,7 @@
 import RenderHomePage from "./home";
 import ProjectImage from './assets/project.png';
 import listModule from './todolist';
+import itemModule from './todoitem'
 
 const UIController = (() => {
     // Initialize the UI
@@ -74,8 +75,8 @@ const UIController = (() => {
         taskTitleLabel.htmlFor = taskTitleInput.id;
 
         // Description
-        const taskDescription = document.createElement('textarea');
-        taskDescription.placeholder = 'Enter Task Description Here...'
+        const taskDescriptionTextArea = document.createElement('textarea');
+        taskDescriptionTextArea.placeholder = 'Enter Task Description Here...'
         const taskDescriptionLabel = document.createElement('label');
         taskDescriptionLabel.textContent = 'Description:';
 
@@ -127,13 +128,14 @@ const UIController = (() => {
         modalContent.appendChild(taskTitleLabel);
         modalContent.appendChild(taskTitleInput);
         modalContent.appendChild(taskDescriptionLabel);
-        modalContent.appendChild(taskDescription);
+        modalContent.appendChild(taskDescriptionTextArea);
         modalContent.appendChild(selectContainer);
         modalContent.appendChild(modalButtonContainer);
         taskModal.appendChild(modalContent);
         taskSection.appendChild(taskModal);
 
         // event listener for submitting modal
+        submitTaskButton.addEventListener('click', (e) => handleTaskFormSubmit(e, taskTitleInput, taskDescriptionTextArea, taskDate, taskPriority));
 
         // event listener for canceling / closing modal
         cancelTaskButton.addEventListener('click', () => {
@@ -340,6 +342,24 @@ const UIController = (() => {
             updateBanner(selectedTodoList.name);
         }
     };
+
+    // render the selected todolist task items (seleced todolist should display its own todo items when switching)
+
+    // Handle Adding Task Form Submission
+    const handleTaskFormSubmit = (event, taskTitle, taskDescription, taskDate, taskPriority) => {
+        event.preventDefault();
+        // create todo item
+        const newTodoItem = itemModule.createTodoItem(taskTitle.value, taskDescription.value, taskDate.value, taskPriority.value);
+        console.log(newTodoItem);
+        // Add todo item to selected list
+        const selectedList = listModule.getSelectedList();
+        listModule.addTodoItemtoList(selectedList.id, newTodoItem);
+        console.log(selectedList);
+        // close task modal
+        closeTaskModal();
+        // render todo items
+
+    }
 
     // Cancel edit mode and revert to displaying project name
     const cancelEdit = (projectDiv, projectNameSpan, editInput, editButton, deleteButton, exitButton) => {

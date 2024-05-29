@@ -42,4 +42,4 @@ const createTodoItem = (title, description, dueDate, priority) => {
     return new TodoItem(title, description, dueDate, priority);
 };
 
-export default createTodoItem;
+export default {createTodoItem};
