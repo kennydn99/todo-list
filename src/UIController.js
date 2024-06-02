@@ -235,7 +235,10 @@ const UIController = (() => {
     const renderTodoItems = (list) => {
         list.taskList.forEach((task) => {
             console.log(task.title);
-            createTaskDiv(task);
+            if(!task.rendered) {
+                createTaskDiv(task);
+                task.rendered = true;
+            }
         })
     }
 
@@ -257,6 +260,20 @@ const UIController = (() => {
         // priority color, checkbox, div(title & descrip), dueDate, options
         const taskPriorityColor = document.createElement('div');
         taskPriorityColor.classList.add('task-priority-color');
+        switch(task.priority) {
+            case "Low": 
+                taskPriorityColor.style.borderColor = '#28a745';
+                taskDiv.style.borderColor = '#28a745';
+                break;
+            case "Medium": 
+                taskPriorityColor.style.borderColor = '#fd7e14';
+                taskDiv.style.borderColor = '#fd7e14';
+                break;
+            case "High": 
+                taskPriorityColor.style.borderColor = '#dc3545';
+                taskDiv.style.borderColor = '#dc3545';
+                break;
+        }
 
         const checkbox = document.createElement('div');
         checkbox.classList.add('checkbox');
@@ -275,6 +292,9 @@ const UIController = (() => {
         const taskDateDiv = document.createElement('div');
         taskDateDiv.classList.add('task-date-div');
         taskDateDiv.textContent = task.dueDate;
+        if(task.dueDate === "") {
+            taskDateDiv.style.border = 'none';
+        }
 
         const optionsDiv = document.createElement('div');
         optionsDiv.classList.add('options-div');
