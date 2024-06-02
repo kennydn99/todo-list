@@ -1,6 +1,7 @@
 import menuIcon from './assets/menu.png';
 import logoIcon from  './assets/logo.png';
 import moonIcon from './assets/moon.png';
+import allTasksIcon from './assets/alltasks.png'
 
 
 export default function RenderHomePage() {
@@ -62,6 +63,17 @@ function RenderContent() {
     homeHeading.textContent = 'Home';
     home.appendChild(homeHeading);
 
+    // all tasks "list"
+    const allTasksList = document.createElement('div');
+    allTasksList.classList.add('all-tasks-div');
+    const allTasksImage = document.createElement('img');
+    allTasksImage.src = allTasksIcon;
+    const allTasksSpan = document.createElement('span');
+    allTasksSpan.textContent = 'The Needful';
+    allTasksList.appendChild(allTasksImage);
+    allTasksList.appendChild(allTasksSpan);
+    home.appendChild(allTasksList);
+
     const projects = document.createElement('div');
     projects.classList.add('projects');
     const projectsHeading = document.createElement('h2')
@@ -89,6 +101,10 @@ function RenderContent() {
     const addTaskButton = document.createElement('button');
     addTaskButton.classList.add('add-task-btn');
     addTaskButton.textContent = 'Add Task';
+
+    const taskUl = document.createElement('ul');
+    taskUl.classList.add('task-ul');
+    taskSection.appendChild(taskUl);
     
     mainPanel.appendChild(banner);
     mainPanel.appendChild(addTaskButton);

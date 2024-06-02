@@ -2,6 +2,8 @@
 
 import RenderHomePage from "./home";
 import ProjectImage from './assets/project.png';
+import EditTaskIcon from './assets/editTask.png';
+import DeleteTaskIcon from './assets/deleteTask.png';
 import listModule from './todolist';
 import itemModule from './todoitem'
 
@@ -229,6 +231,75 @@ const UIController = (() => {
         });
     };
 
+    // render the todoitems of a list
+    const renderTodoItems = (list) => {
+        list.taskList.forEach((task) => {
+            console.log(task.title);
+            createTaskDiv(task);
+        })
+    }
+
+    // create and append a new task div to li then to the task ul
+    const createTaskDiv = (task) => {
+        const taskUl = document.querySelector('.task-ul');
+        const taskLi = document.createElement('li');
+        const taskDiv = buildTaskDiv(task);
+        taskLi.appendChild(taskDiv);
+        taskUl.appendChild(taskLi);
+    }
+
+    // Build a task div element for a given task
+    const buildTaskDiv = (task) => {
+        const taskDiv = document.createElement('div');
+        taskDiv.classList.add('task-div');
+        // taskDiv.dataset.taskId = task.id;
+
+        // priority color, checkbox, div(title & descrip), dueDate, options
+        const taskPriorityColor = document.createElement('div');
+        taskPriorityColor.classList.add('task-priority-color');
+
+        const checkbox = document.createElement('div');
+        checkbox.classList.add('checkbox');
+
+        const taskDetailsContainer = document.createElement('div');
+        taskDetailsContainer.classList.add('task-details-div');
+        const taskTitleDiv = document.createElement('div');
+        taskTitleDiv.classList.add('task-title-div');
+        taskTitleDiv.textContent = task.title;
+        const taskDescriptionDiv = document.createElement('div');
+        taskDescriptionDiv.classList.add('task-desc-div');
+        taskDescriptionDiv.textContent = task.description;
+        taskDetailsContainer.appendChild(taskTitleDiv);
+        taskDetailsContainer.appendChild(taskDescriptionDiv);
+
+        const taskDateDiv = document.createElement('div');
+        taskDateDiv.classList.add('task-date-div');
+        taskDateDiv.textContent = task.dueDate;
+
+        const optionsDiv = document.createElement('div');
+        optionsDiv.classList.add('options-div');
+        //icon opens edit & delete buttons
+        const editTask = document.createElement('span');
+        const editTaskImage = document.createElement('img');
+        editTaskImage.src = EditTaskIcon;
+        editTask.appendChild(editTaskImage);
+        const deleteTask = document.createElement('span');
+        const deleteTaskImage = document.createElement('img');
+        deleteTaskImage.src = DeleteTaskIcon;
+        deleteTask.appendChild(deleteTaskImage);
+        optionsDiv.appendChild(editTask);
+        optionsDiv.appendChild(deleteTask);
+
+        // append elements
+        taskDiv.appendChild(taskPriorityColor);
+        taskDiv.appendChild(checkbox);
+        taskDiv.appendChild(taskDetailsContainer);
+        taskDiv.appendChild(taskDateDiv);
+        taskDiv.appendChild(optionsDiv);
+
+        return taskDiv;
+    }
+
     // Create and append a new project div to the projects container
     const createProjectDiv = (list) => {
         const projectsContainer = document.querySelector('.projects');
@@ -358,7 +429,7 @@ const UIController = (() => {
         // close task modal
         closeTaskModal();
         // render todo items
-
+        renderTodoItems(selectedList);
     }
 
     // Cancel edit mode and revert to displaying project name

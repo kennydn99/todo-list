@@ -9,6 +9,7 @@ class TodoItem {
         this.dueDate = dueDate;
         this.priority = priority;
         this.complete = false;
+        // this.id = Date.now().toString();
     }
 
     updateTitle(newTitle) {
