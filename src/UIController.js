@@ -4,6 +4,7 @@ import RenderHomePage from "./home";
 import ProjectImage from './assets/project.png';
 import EditTaskIcon from './assets/editTask.png';
 import DeleteTaskIcon from './assets/deleteTask.png';
+import CheckmarkIcon from './assets/checkmark.png';
 import listModule from './todolist';
 import itemModule from './todoitem'
 
@@ -240,7 +241,7 @@ const UIController = (() => {
                 task.rendered = true;
             }
         })
-    }
+    };
 
     // create and append a new task div to li then to the task ul
     const createTaskDiv = (task) => {
@@ -249,7 +250,8 @@ const UIController = (() => {
         const taskDiv = buildTaskDiv(task);
         taskLi.appendChild(taskDiv);
         taskUl.appendChild(taskLi);
-    }
+        addTaskEventListeners(taskDiv, task);
+    };
 
     // Build a task div element for a given task
     const buildTaskDiv = (task) => {
@@ -300,10 +302,12 @@ const UIController = (() => {
         optionsDiv.classList.add('options-div');
         //icon opens edit & delete buttons
         const editTask = document.createElement('span');
+        editTask.classList.add('edit-task');
         const editTaskImage = document.createElement('img');
         editTaskImage.src = EditTaskIcon;
         editTask.appendChild(editTaskImage);
         const deleteTask = document.createElement('span');
+        deleteTask.classList.add('delete-task');
         const deleteTaskImage = document.createElement('img');
         deleteTaskImage.src = DeleteTaskIcon;
         deleteTask.appendChild(deleteTaskImage);
@@ -318,7 +322,38 @@ const UIController = (() => {
         taskDiv.appendChild(optionsDiv);
 
         return taskDiv;
-    }
+    };
+
+    // Add event listeners to task div when checking off, editing and deleting
+    const addTaskEventListeners = (taskDiv, task) => {
+        const checkbox = taskDiv.querySelector('.checkbox');
+        const editTaskButton = taskDiv.querySelector('.edit-task');
+        const deleteTaskButton = taskDiv.querySelector('.delete-task');
+        checkbox.addEventListener('click', () => handleCheckboxClick(taskDiv, task));
+    };
+
+    // Handle click event for task checkbox
+    const handleCheckboxClick = (taskDiv, task) => {
+        const checkbox = taskDiv.querySelector('.checkbox');
+        const taskDetails = taskDiv.querySelector('.task-details-div');
+
+        if (!task.complete) {
+            checkbox.style.backgroundImage = `url(${CheckmarkIcon})`;
+            checkbox.style.backgroundRepeat = 'no-repeat';
+            checkbox.style.backgroundSize = '100%';
+            
+            taskDetails.style.textDecoration = 'line-through';
+            task.complete = true;
+        } else {
+            checkbox.style.removeProperty('background-image');
+            checkbox.style.removeProperty('background-repeat');
+            checkbox.style.removeProperty('background-size');
+
+            taskDetails.style.removeProperty('text-decoration');
+            task.complete = false;
+        }
+
+    };
 
     // Create and append a new project div to the projects container
     const createProjectDiv = (list) => {
