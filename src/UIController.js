@@ -59,7 +59,7 @@ const UIController = (() => {
     }
 
     // Create & display the task creation form
-    const createTaskModal = () => {
+    const createTaskModal = (existingTask = null) => {
         const taskSection = document.querySelector('.task-section');
 
         // Create form element
@@ -73,13 +73,15 @@ const UIController = (() => {
         taskTitleInput.required = true;
         taskTitleInput.id = 'task-title';
         taskTitleInput.placeholder = 'Enter Task Name...';
+        if (existingTask) taskTitleInput.value = existingTask.title;
         const taskTitleLabel = document.createElement('label');
         taskTitleLabel.textContent = 'Title:';
         taskTitleLabel.htmlFor = taskTitleInput.id;
 
         // Description
         const taskDescriptionTextArea = document.createElement('textarea');
-        taskDescriptionTextArea.placeholder = 'Enter Task Description Here...'
+        taskDescriptionTextArea.placeholder = 'Enter Task Description Here...';
+        if (existingTask) taskDescriptionTextArea.value = existingTask.description;
         const taskDescriptionLabel = document.createElement('label');
         taskDescriptionLabel.textContent = 'Description:';
 
@@ -93,6 +95,7 @@ const UIController = (() => {
         const taskDate = document.createElement('input');
         taskDate.type = 'date';
         taskDate.id = 'task-date-input';
+        if (existingTask) taskDate.value = existingTask.dueDate;
         const taskDateLabel = document.createElement('label');
         taskDateLabel.textContent = 'Date:';
         dateContainer.appendChild(taskDateLabel);
@@ -106,12 +109,13 @@ const UIController = (() => {
         const taskPriority = document.createElement('select');
         taskPriority.id = 'task-priority-select';
         const priorities = ['Low', 'Medium', 'High'];
-        for (let i = 0; i < priorities.length; i++) {
-            let option = document.createElement('option');
-            option.value = priorities[i];
-            option.text = priorities[i];
+        priorities.forEach(priority => {
+            const option = document.createElement('option');
+            option.value = priority;
+            option.text = priority;
             taskPriority.appendChild(option);
-        }
+        });
+        if (existingTask) taskPriority.value = existingTask.priority;
         priorityContainer.appendChild(taskPriorityLabel);
         priorityContainer.appendChild(taskPriority);
 
@@ -121,7 +125,7 @@ const UIController = (() => {
         const modalButtonContainer = document.createElement('div');
         modalButtonContainer.classList.add('modal-btn-container');
         const submitTaskButton = document.createElement('button');
-        submitTaskButton.textContent = 'Add';
+        submitTaskButton.textContent = existingTask ? 'Update' : 'Add';
         submitTaskButton.type = 'submit';
         const cancelTaskButton = document.createElement('button');
         cancelTaskButton.textContent = 'Cancel';
@@ -138,7 +142,7 @@ const UIController = (() => {
         taskSection.appendChild(taskModal);
 
         // event listener for submitting modal
-        submitTaskButton.addEventListener('click', (e) => handleTaskFormSubmit(e, taskTitleInput, taskDescriptionTextArea, taskDate, taskPriority));
+        submitTaskButton.addEventListener('click', (e) => handleTaskFormSubmit(e, taskTitleInput, taskDescriptionTextArea, taskDate, taskPriority, existingTask));
 
         // event listener for canceling / closing modal
         cancelTaskButton.addEventListener('click', () => {
@@ -329,7 +333,9 @@ const UIController = (() => {
         const checkbox = taskDiv.querySelector('.checkbox');
         const editTaskButton = taskDiv.querySelector('.edit-task');
         const deleteTaskButton = taskDiv.querySelector('.delete-task');
+
         checkbox.addEventListener('click', () => handleCheckboxClick(taskDiv, task));
+        editTaskButton.addEventListener('click', () => handleEditTaskClick(taskDiv, task));
     };
 
     // Handle click event for task checkbox
@@ -352,7 +358,13 @@ const UIController = (() => {
             taskDetails.style.removeProperty('text-decoration');
             task.complete = false;
         }
+    };
 
+    const handleEditTaskClick = (taskDiv, task) => {
+        // create & open a Task modal with placeholders as existing values to edit & update task changes
+        if (!isTaskModalOpen) {
+            createTaskModal(task);
+        }
     };
 
     // Create and append a new project div to the projects container
@@ -472,15 +484,25 @@ const UIController = (() => {
     // render the selected todolist task items (seleced todolist should display its own todo items when switching)
 
     // Handle Adding Task Form Submission
-    const handleTaskFormSubmit = (event, taskTitle, taskDescription, taskDate, taskPriority) => {
+    const handleTaskFormSubmit = (event, taskTitle, taskDescription, taskDate, taskPriority, existingTask = null) => {
         event.preventDefault();
-        // create todo item
-        const newTodoItem = itemModule.createTodoItem(taskTitle.value, taskDescription.value, taskDate.value, taskPriority.value);
-        console.log(newTodoItem);
-        // Add todo item to selected list
         const selectedList = listModule.getSelectedList();
-        listModule.addTodoItemtoList(selectedList.id, newTodoItem);
-        console.log(selectedList);
+        
+        // if task has id we update, otherwise its new task
+        if (existingTask) {
+            // existingTask.title = taskTitle.value;
+            // existingTask.description = taskDescription.value;
+            // existingTask.dueDate = taskDate.value;
+            // existingTask.priority = taskPriority.value;
+            //update todoitem
+            existingTask.updateTitle(taskTitle.value);
+            console.log('existingtask', existingTask);
+            // need to edit taskdiv to render updates
+        } else {
+            const newTodoItem = itemModule.createTodoItem(taskTitle.value, taskDescription.value, taskDate.value, taskPriority.value);
+            listModule.addTodoItemtoList(selectedList.id, newTodoItem);
+        }
+        
         // close task modal
         closeTaskModal();
         // render todo items
@@ -504,6 +526,11 @@ const UIController = (() => {
         projectDiv.replaceChild(projectNameSpan, editInput);
         updateBanner(projectNameSpan.textContent);
     };
+
+    // Update task div details
+    const updateTaskDiv = (taskTitle, taskDescription, taskDate, taskPriority, task) => {
+
+    }
 
     // Reset buttons to Edit and Delete after editing
     const resetButtons = (container, editButton, deleteButton, exitButton) => {
