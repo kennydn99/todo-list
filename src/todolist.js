@@ -1,3 +1,5 @@
+import todoitem from "./todoitem";
+
 let lists = [];
 
 class TodoList {
@@ -42,10 +44,15 @@ const addTodoItemtoList = (listId, todoItem) => {
     list.addTodoItem(todoItem);
 }
 
+const removeTodoItemFromList = (listId, todoItem) => {
+    const list = getList(listId);
+    list.removeTodoItem(todoItem);
+}
+
 const getListIndex = (listId) => lists.findIndex((list) => list.id === listId);
 
 const getList = (listId) => lists.find((list) => list.id === listId);
 
 const getSelectedList = () => lists.find((list) => list.selected);
 
-export default {lists, createTodoList, deleteTodoList, updateName, getList, getSelectedList, addTodoItemtoList};
+export default {lists, createTodoList, deleteTodoList, updateName, getList, getSelectedList, addTodoItemtoList, removeTodoItemFromList};

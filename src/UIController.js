@@ -261,7 +261,7 @@ const UIController = (() => {
     const buildTaskDiv = (task) => {
         const taskDiv = document.createElement('div');
         taskDiv.classList.add('task-div');
-        // taskDiv.dataset.taskId = task.id;
+        taskDiv.dataset.taskId = task.id;
 
         // priority color, checkbox, div(title & descrip), dueDate, options
         const taskPriorityColor = document.createElement('div');
@@ -336,6 +336,7 @@ const UIController = (() => {
 
         checkbox.addEventListener('click', () => handleCheckboxClick(taskDiv, task));
         editTaskButton.addEventListener('click', () => handleEditTaskClick(taskDiv, task));
+        deleteTaskButton.addEventListener('click', () => handleDeleteTaskClick(taskDiv, task));
     };
 
     // Handle click event for task checkbox
@@ -364,7 +365,18 @@ const UIController = (() => {
         // create & open a Task modal with placeholders as existing values to edit & update task changes
         if (!isTaskModalOpen) {
             createTaskModal(task);
+            console.log('TaskDiv being passed', taskDiv)
+            
         }
+    };
+
+    const handleDeleteTaskClick = (taskDiv, task) => {
+        task.deleteTodoItem();
+        taskDiv.remove()
+        //need to remove todo item from todolist
+        const selectedList = listModule.getSelectedList();
+        listModule.removeTodoItemFromList(selectedList.id, task);
+        console.log(selectedList);
     };
 
     // Create and append a new project div to the projects container
@@ -490,14 +502,15 @@ const UIController = (() => {
         
         // if task has id we update, otherwise its new task
         if (existingTask) {
-            // existingTask.title = taskTitle.value;
-            // existingTask.description = taskDescription.value;
-            // existingTask.dueDate = taskDate.value;
-            // existingTask.priority = taskPriority.value;
             //update todoitem
             existingTask.updateTitle(taskTitle.value);
+            existingTask.updateDescription(taskDescription.value);
+            existingTask.updateDueDate(taskDate.value);
+            existingTask.updatePriority(taskPriority.value);
             console.log('existingtask', existingTask);
-            // need to edit taskdiv to render updates
+            // remove existing div and create new taskdiv with updated fields
+            
+            // createTaskDiv(existingTask);
         } else {
             const newTodoItem = itemModule.createTodoItem(taskTitle.value, taskDescription.value, taskDate.value, taskPriority.value);
             listModule.addTodoItemtoList(selectedList.id, newTodoItem);
@@ -519,6 +532,11 @@ const UIController = (() => {
         projectDiv.style.padding = '0px 30px';
     };
 
+    // Update Task Div details
+    const updateTaskDiv = (taskDiv, updatedTask) => {
+
+    }
+
     // Update the project name and revert to displaying project name span
     const updateProjectName = (projectDiv, projectNameSpan, editInput, list) => {
         projectNameSpan.textContent = editInput.value || projectNameSpan.textContent;
@@ -526,11 +544,6 @@ const UIController = (() => {
         projectDiv.replaceChild(projectNameSpan, editInput);
         updateBanner(projectNameSpan.textContent);
     };
-
-    // Update task div details
-    const updateTaskDiv = (taskTitle, taskDescription, taskDate, taskPriority, task) => {
-
-    }
 
     // Reset buttons to Edit and Delete after editing
     const resetButtons = (container, editButton, deleteButton, exitButton) => {
