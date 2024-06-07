@@ -59,7 +59,7 @@ const UIController = (() => {
     }
 
     // Create & display the task creation form
-    const createTaskModal = (existingTask = null) => {
+    const createTaskModal = (existingTask = null, taskDiv) => {
         const taskSection = document.querySelector('.task-section');
 
         // Create form element
@@ -142,7 +142,7 @@ const UIController = (() => {
         taskSection.appendChild(taskModal);
 
         // event listener for submitting modal
-        submitTaskButton.addEventListener('click', (e) => handleTaskFormSubmit(e, taskTitleInput, taskDescriptionTextArea, taskDate, taskPriority, existingTask));
+        submitTaskButton.addEventListener('click', (e) => handleTaskFormSubmit(e, taskTitleInput, taskDescriptionTextArea, taskDate, taskPriority, existingTask, taskDiv));
 
         // event listener for canceling / closing modal
         cancelTaskButton.addEventListener('click', () => {
@@ -364,9 +364,8 @@ const UIController = (() => {
     const handleEditTaskClick = (taskDiv, task) => {
         // create & open a Task modal with placeholders as existing values to edit & update task changes
         if (!isTaskModalOpen) {
-            createTaskModal(task);
+            createTaskModal(task, taskDiv);
             console.log('TaskDiv being passed', taskDiv)
-            
         }
     };
 
@@ -496,7 +495,7 @@ const UIController = (() => {
     // render the selected todolist task items (seleced todolist should display its own todo items when switching)
 
     // Handle Adding Task Form Submission
-    const handleTaskFormSubmit = (event, taskTitle, taskDescription, taskDate, taskPriority, existingTask = null) => {
+    const handleTaskFormSubmit = (event, taskTitle, taskDescription, taskDate, taskPriority, existingTask = null, taskDiv) => {
         event.preventDefault();
         const selectedList = listModule.getSelectedList();
         
@@ -509,8 +508,9 @@ const UIController = (() => {
             existingTask.updatePriority(taskPriority.value);
             console.log('existingtask', existingTask);
             // remove existing div and create new taskdiv with updated fields
-            
-            // createTaskDiv(existingTask);
+            listModule.addTodoItemtoList(selectedList.id, existingTask);
+            handleDeleteTaskClick(taskDiv, existingTask);
+            createTaskDiv(existingTask);
         } else {
             const newTodoItem = itemModule.createTodoItem(taskTitle.value, taskDescription.value, taskDate.value, taskPriority.value);
             listModule.addTodoItemtoList(selectedList.id, newTodoItem);
