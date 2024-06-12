@@ -100,6 +100,7 @@ function RenderContent() {
     taskSection.classList.add('task-section');
     const addTaskButton = document.createElement('button');
     addTaskButton.classList.add('add-task-btn');
+    addTaskButton.classList.add('hidden');
     addTaskButton.textContent = 'Add Task';
 
     const taskUl = document.createElement('ul');

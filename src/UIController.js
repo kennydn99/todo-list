@@ -467,6 +467,12 @@ const UIController = (() => {
     const handleDeleteButtonClick = (projectDiv, list) => {
         listModule.deleteTodoList(projectDiv.dataset.listId);
         projectDiv.remove();
+        // const projectsContainer = document.querySelector('.projects');
+        // console.log(projectsContainer.children.length)
+        // const addTaskButton = document.querySelector('.add-task-btn');
+        // if (projectsContainer.children.length === 2) {
+        //     addTaskButton.classList.add('hidden');
+        // }
     };
 
     // Handle click event for a project div to select the project
@@ -495,19 +501,27 @@ const UIController = (() => {
             selectedTodoList.taskList.forEach((task) => task.rendered = false);
             renderTodoItems(selectedTodoList);
         }
+
+        const addTaskButton = document.querySelector('.add-task-btn');
+        addTaskButton.classList.remove('hidden');
     };
 
     // Clear the existing task list on UI
     const clearTaskList = () => {
         const taskUl = document.querySelector('.task-ul');
-        while(taskUl.firstChild) {
-            taskUl.removeChild(taskUl.firstChild);
-        }
+        taskUl.innerHTML = '';
     };
 
     // Handle Adding Task Form Submission
     const handleTaskFormSubmit = (event, taskTitle, taskDescription, taskDate, taskPriority, existingTask = null, taskDiv) => {
         event.preventDefault();
+
+        if (!taskTitle.value.trim()) {
+            // Display an error message or perform some action
+            alert('Task title is required!');
+            return;
+        }
+        
         const selectedList = listModule.getSelectedList();
         
         // if task has id we update, otherwise its new task
@@ -542,11 +556,6 @@ const UIController = (() => {
         projectDivButtonContainer.appendChild(deleteButton);
         projectDiv.style.padding = '0px 30px';
     };
-
-    // Update Task Div details
-    const updateTaskDiv = (taskDiv, updatedTask) => {
-
-    }
 
     // Update the project name and revert to displaying project name span
     const updateProjectName = (projectDiv, projectNameSpan, editInput, list) => {
