@@ -489,10 +489,21 @@ const UIController = (() => {
             selectedTodoList.selected = true;
             projectDiv.classList.add('selected-project');
             updateBanner(selectedTodoList.name);
+            
+            // clear task in UI and render tasks of selected todolist
+            clearTaskList();
+            selectedTodoList.taskList.forEach((task) => task.rendered = false);
+            renderTodoItems(selectedTodoList);
         }
     };
 
-    // render the selected todolist task items (seleced todolist should display its own todo items when switching)
+    // Clear the existing task list on UI
+    const clearTaskList = () => {
+        const taskUl = document.querySelector('.task-ul');
+        while(taskUl.firstChild) {
+            taskUl.removeChild(taskUl.firstChild);
+        }
+    };
 
     // Handle Adding Task Form Submission
     const handleTaskFormSubmit = (event, taskTitle, taskDescription, taskDate, taskPriority, existingTask = null, taskDiv) => {
