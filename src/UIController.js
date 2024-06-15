@@ -6,7 +6,9 @@ import EditTaskIcon from './assets/editTask.png';
 import DeleteTaskIcon from './assets/deleteTask.png';
 import CheckmarkIcon from './assets/checkmark.png';
 import listModule from './todolist';
-import itemModule from './todoitem'
+import itemModule from './todoitem';
+import {format} from "date-fns";
+
 
 const UIController = (() => {
     // Initialize the UI
@@ -95,7 +97,10 @@ const UIController = (() => {
         const taskDate = document.createElement('input');
         taskDate.type = 'date';
         taskDate.id = 'task-date-input';
-        if (existingTask) taskDate.value = existingTask.dueDate;
+        if (existingTask && existingTask.dueDate) {
+            // const formattedDate = format(parse(existingTask.dueDate))
+            taskDate.value = format(existingTask.dueDate, 'yyy-MM-dd');
+        } 
         const taskDateLabel = document.createElement('label');
         taskDateLabel.textContent = 'Date:';
         dateContainer.appendChild(taskDateLabel);
@@ -196,7 +201,6 @@ const UIController = (() => {
             const projectName = projectInput.value;
             closeProjectForm();
             listModule.createTodoList(projectName);
-            console.log(listModule.lists);
             renderTodoLists(listModule.lists);
         });
 
@@ -239,7 +243,6 @@ const UIController = (() => {
     // render the todoitems of a list
     const renderTodoItems = (list) => {
         list.taskList.forEach((task) => {
-            console.log(task.title);
             if(!task.rendered) {
                 createTaskDiv(task);
                 task.rendered = true;
@@ -365,7 +368,6 @@ const UIController = (() => {
         // create & open a Task modal with placeholders as existing values to edit & update task changes
         if (!isTaskModalOpen) {
             createTaskModal(task, taskDiv);
-            console.log('TaskDiv being passed', taskDiv)
         }
     };
 
@@ -375,7 +377,6 @@ const UIController = (() => {
         //need to remove todo item from todolist
         const selectedList = listModule.getSelectedList();
         listModule.removeTodoItemFromList(selectedList.id, task);
-        console.log(selectedList);
     };
 
     // Create and append a new project div to the projects container
@@ -531,7 +532,6 @@ const UIController = (() => {
             existingTask.updateDescription(taskDescription.value);
             existingTask.updateDueDate(taskDate.value);
             existingTask.updatePriority(taskPriority.value);
-            console.log('existingtask', existingTask);
             // remove existing div and create new taskdiv with updated fields
             listModule.addTodoItemtoList(selectedList.id, existingTask);
             handleDeleteTaskClick(taskDiv, existingTask);

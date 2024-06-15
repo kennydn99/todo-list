@@ -1,15 +1,26 @@
 // This module will handle the creation, manipulation, and management of individual to-do items.
 // It should include functions for creating new to-do items, setting their properties 
 // (title, description, due date, priority, notes, checklist), updating them, and deleting them.
+import {parse, format, isValid} from "date-fns";
 
 class TodoItem {
     constructor(title, description, dueDate, priority) {
         this.title = title;
         this.description = description;
-        this.dueDate = dueDate;
+        this.dueDate = this.formatDate(dueDate);
         this.priority = priority;
         this.complete = false;
         this.id = Date.now().toString();
+    }
+
+    formatDate(dueDate) {
+        if (dueDate) {
+            const dateObject = parse(dueDate, "yyyy-MM-dd", new Date());
+            if (isValid(dateObject)) {
+                return format(dateObject, 'MM/dd/yyyy');
+            }
+        }
+        return "";
     }
 
     updateTitle(newTitle) {
@@ -21,7 +32,7 @@ class TodoItem {
     }
 
     updateDueDate(newDueDate) {
-        this.dueDate = newDueDate;
+        this.dueDate = this.formatDate(newDueDate);
     }
 
     updatePriority(newPriority) {
