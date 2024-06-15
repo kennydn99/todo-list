@@ -66,6 +66,7 @@ function RenderContent() {
     // all tasks "list"
     const allTasksList = document.createElement('div');
     allTasksList.classList.add('all-tasks-div');
+    allTasksList.classList.add('selected-project');
     const allTasksImage = document.createElement('img');
     allTasksImage.src = allTasksIcon;
     const allTasksSpan = document.createElement('span');

@@ -38,6 +38,9 @@ const UIController = (() => {
         // Add Task to Project
         const addTaskButton = document.querySelector('.add-task-btn');
         addTaskButton.addEventListener('click', handleAddTaskClick);
+
+        const allTasksDiv = document.querySelector('.all-tasks-div');
+        allTasksDiv.addEventListener('click', handleAllTasksDivClick);
     };
 
     // Flag to track if the project form is open
@@ -244,6 +247,7 @@ const UIController = (() => {
     const renderTodoItems = (list) => {
         list.taskList.forEach((task) => {
             if(!task.rendered) {
+                console.log('task complete:', task.complete);
                 createTaskDiv(task);
                 task.rendered = true;
             }
@@ -328,6 +332,14 @@ const UIController = (() => {
         taskDiv.appendChild(taskDateDiv);
         taskDiv.appendChild(optionsDiv);
 
+        // Apply completion status
+        if (task.complete) {
+            checkbox.style.backgroundImage = `url(${CheckmarkIcon})`;
+            checkbox.style.backgroundRepeat = 'no-repeat';
+            checkbox.style.backgroundSize = '100%';
+            taskDetailsContainer.style.textDecoration = 'line-through';
+        }
+        
         return taskDiv;
     };
 
@@ -344,6 +356,11 @@ const UIController = (() => {
 
     // Handle click event for task checkbox
     const handleCheckboxClick = (taskDiv, task) => {
+        styleCompletedTask(taskDiv, task);
+    };
+
+    // Style completed tasks
+    const styleCompletedTask = (taskDiv, task) => {
         const checkbox = taskDiv.querySelector('.checkbox');
         const taskDetails = taskDiv.querySelector('.task-details-div');
 
@@ -362,7 +379,7 @@ const UIController = (() => {
             taskDetails.style.removeProperty('text-decoration');
             task.complete = false;
         }
-    };
+    }
 
     const handleEditTaskClick = (taskDiv, task) => {
         // create & open a Task modal with placeholders as existing values to edit & update task changes
@@ -478,17 +495,8 @@ const UIController = (() => {
 
     // Handle click event for a project div to select the project
     const handleProjectDivClick = (projectDiv, list) => {
-        const projectDivs = document.querySelectorAll('.project-div');
-
         // Unselect all project divs
-        projectDivs.forEach(div => {
-            const listId = div.dataset.listId;
-            const listItem = listModule.getList(listId);
-            if (listItem) {
-                listItem.selected = false;
-            }
-            div.classList.remove('selected-project');
-        });
+        unselectAllProjectDivs();
 
         // Select the clicked project div
         const selectedTodoList = listModule.getList(projectDiv.dataset.listId);
@@ -506,6 +514,52 @@ const UIController = (() => {
         const addTaskButton = document.querySelector('.add-task-btn');
         addTaskButton.classList.remove('hidden');
     };
+
+    // Handle click event for all tasks (the Needful)
+    const handleAllTasksDivClick = () => {
+        unselectAllProjectDivs();
+        // make the all-task-div styled
+        const allTasksDiv = document.querySelector('.all-tasks-div');
+        allTasksDiv.classList.add('selected-project');
+
+        // update banner
+        const allTasksSpan = allTasksDiv.querySelector('span');
+        updateBanner(allTasksSpan.textContent);
+
+        // clearlist
+        clearTaskList();
+        // hide add task button
+        const addTaskButton = document.querySelector('.add-task-btn');
+        addTaskButton.classList.add('hidden');
+
+        //uncheck render fo all tasks
+
+        // render todoitems of each todolist
+        const listOfAllProjects = listModule.lists;
+        listOfAllProjects.forEach((project) => {
+            project.taskList.forEach((task) => task.rendered = false);
+            renderTodoItems(project);
+        });
+    }
+
+    // Unselect all project divs
+    const unselectAllProjectDivs = () => {
+        const projectDivs = document.querySelectorAll('.project-div');
+
+        // Unselect all project divs
+        projectDivs.forEach(div => {
+            const listId = div.dataset.listId;
+            const listItem = listModule.getList(listId);
+            if (listItem) {
+                listItem.selected = false;
+            }
+            div.classList.remove('selected-project');
+        });
+
+        // unselect all tasks div
+        const allTasksDiv = document.querySelector('.all-tasks-div');
+        allTasksDiv.classList.remove('selected-project');
+    }
 
     // Clear the existing task list on UI
     const clearTaskList = () => {
