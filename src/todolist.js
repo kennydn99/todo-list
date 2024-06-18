@@ -1,6 +1,7 @@
 import todoitem from "./todoitem";
 
 let lists = [];
+let allTasksView = false;
 
 class TodoList {
     constructor(name) {
@@ -55,4 +56,22 @@ const getList = (listId) => lists.find((list) => list.id === listId);
 
 const getSelectedList = () => lists.find((list) => list.selected);
 
-export default {lists, createTodoList, deleteTodoList, updateName, getList, getSelectedList, addTodoItemtoList, removeTodoItemFromList};
+const setAllTasksView = (state) => allTasksView = state;
+
+const isAllTasksView = () => allTasksView;
+
+const getListForTask = (task) => lists.find(list => list.taskList.includes(task));
+
+export default {
+    lists, 
+    createTodoList, 
+    deleteTodoList, 
+    updateName, 
+    getList, 
+    getSelectedList, 
+    addTodoItemtoList, 
+    removeTodoItemFromList,
+    setAllTasksView,
+    isAllTasksView,
+    getListForTask
+};

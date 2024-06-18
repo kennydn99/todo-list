@@ -391,9 +391,15 @@ const UIController = (() => {
     const handleDeleteTaskClick = (taskDiv, task) => {
         task.deleteTodoItem();
         taskDiv.remove()
-        //need to remove todo item from todolist
-        const selectedList = listModule.getSelectedList();
-        listModule.removeTodoItemFromList(selectedList.id, task);
+        const inAllTasksView = listModule.isAllTasksView();
+        if (!inAllTasksView) {
+            //need to remove todo item from todolist
+            const selectedList = listModule.getSelectedList();
+            listModule.removeTodoItemFromList(selectedList.id, task);
+        } else {
+            const selectedList = listModule.getListForTask(task);
+            listModule.removeTodoItemFromList(selectedList.id, task);
+        }
     };
 
     // Create and append a new project div to the projects container
@@ -513,6 +519,8 @@ const UIController = (() => {
 
         const addTaskButton = document.querySelector('.add-task-btn');
         addTaskButton.classList.remove('hidden');
+
+        listModule.setAllTasksView(false);
     };
 
     // Handle click event for all tasks (the Needful)
@@ -540,6 +548,9 @@ const UIController = (() => {
             project.taskList.forEach((task) => task.rendered = false);
             renderTodoItems(project);
         });
+
+        // Keep reference to all tasks
+        listModule.setAllTasksView(true);
     }
 
     // Unselect all project divs
@@ -576,8 +587,17 @@ const UIController = (() => {
             alert('Task title is required!');
             return;
         }
+
+        // determine if in all tasks view
+        const inAllTasksView = listModule.isAllTasksView();
+        let selectedList;
         
-        const selectedList = listModule.getSelectedList();
+        if (!inAllTasksView) {
+            selectedList = listModule.getSelectedList();
+        } else {
+            selectedList = listModule.getListForTask(existingTask);
+            console.log('selectedList: ', selectedList);
+        }
         
         // if task has id we update, otherwise its new task
         if (existingTask) {
@@ -587,9 +607,11 @@ const UIController = (() => {
             existingTask.updateDueDate(taskDate.value);
             existingTask.updatePriority(taskPriority.value);
             // remove existing div and create new taskdiv with updated fields
-            listModule.addTodoItemtoList(selectedList.id, existingTask);
-            handleDeleteTaskClick(taskDiv, existingTask);
-            createTaskDiv(existingTask);
+            if (selectedList) {
+                listModule.addTodoItemtoList(selectedList.id, existingTask);
+                handleDeleteTaskClick(taskDiv, existingTask);
+                createTaskDiv(existingTask);
+            }
         } else {
             const newTodoItem = itemModule.createTodoItem(taskTitle.value, taskDescription.value, taskDate.value, taskPriority.value);
             listModule.addTodoItemtoList(selectedList.id, newTodoItem);
