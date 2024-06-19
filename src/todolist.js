@@ -29,7 +29,7 @@ class TodoList {
         return {
             id: this.id,
             name: this.name,
-            taskList: this.taskList
+            taskList: this.taskList.map(task => task.toJSON())
         };
     }
 
@@ -37,6 +37,7 @@ class TodoList {
         const list = new TodoList(json.name);
         list.id = json.id;
         list.taskList = json.taskList.map(todoitem.TodoItem.fromJSON);
+        console.log('From todoList fromJSON....tasklist = ', list.taskList);
         return list;
     }
 }

@@ -107,7 +107,7 @@ const UIController = (() => {
         taskDate.id = 'task-date-input';
         if (existingTask && existingTask.dueDate) {
             // const formattedDate = format(parse(existingTask.dueDate))
-            taskDate.value = format(existingTask.dueDate, 'yyy-MM-dd');
+            taskDate.value = format(existingTask.dueDate, 'yyyy-MM-dd');
         } 
         const taskDateLabel = document.createElement('label');
         taskDateLabel.textContent = 'Date:';
@@ -252,7 +252,6 @@ const UIController = (() => {
     const renderTodoItems = (list) => {
         list.taskList.forEach((task) => {
             if(!task.rendered) {
-                console.log('task complete:', task.complete);
                 createTaskDiv(task);
                 task.rendered = true;
             }

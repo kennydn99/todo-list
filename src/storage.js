@@ -13,10 +13,10 @@ const saveToLocalStorage = (lists) => {
 //loads data from localStorage & convert back into todolist instances
 const loadFromLocalStorage = (TodoList) => {
     try {
-        console.log('loading from local storage')
         const data = localStorage.getItem(STORAGE_KEY);
         if (data) {
             const parsedData = JSON.parse(data);
+            console.log('loadingFromLocalStorage...returning parsedData: ', parsedData.map(TodoList.fromJSON))
             return parsedData.map(TodoList.fromJSON);
         }
         return [];

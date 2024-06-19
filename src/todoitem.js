@@ -50,6 +50,7 @@ class TodoItem {
     }
 
     toJSON() {
+        console.log(`{dueDate: ${this.dueDate}`);
         return {
             title: this.title,
             description: this.description,
@@ -64,6 +65,8 @@ class TodoItem {
         const item = new TodoItem(json.title, json.description, json.dueDate, json.priority);
         item.complete = json.complete;
         item.id = json.id;
+        item.dueDate = json.dueDate;
+        console.log('From todoitem fromjosn... item= ', item);
         return item;
     }
 }
