@@ -19,6 +19,11 @@ const UIController = (() => {
         ToggleSidePanel();
         // Set up other necessary event listeners
         setupEventListeners();
+        //render todolists from local storage if present
+        if(!listModule.lists.length == 0) {
+            renderTodoLists(listModule.lists);
+            listModule.lists.forEach(list => renderTodoItems(list));
+        }
     };
 
     // Function to toggle the visibility of the side panel
@@ -497,6 +502,9 @@ const UIController = (() => {
         // if (projectsContainer.children.length === 2) {
         //     addTaskButton.classList.add('hidden');
         // }
+        if(listModule.lists.length === 0) {
+            handleAllTasksDivClick()
+        }
     };
 
     // Handle click event for a project div to select the project

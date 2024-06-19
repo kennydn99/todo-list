@@ -48,10 +48,28 @@ class TodoItem {
         // For now, let's just log a message
         console.log(`Deleting todo item: ${this.title}`);
     }
+
+    toJSON() {
+        return {
+            title: this.title,
+            description: this.description,
+            dueDate: this.dueDate,
+            priority: this.priority,
+            complete: this.complete,
+            id: this.id
+        };
+    }
+
+    static fromJSON(json) {
+        const item = new TodoItem(json.title, json.description, json.dueDate, json.priority);
+        item.complete = json.complete;
+        item.id = json.id;
+        return item;
+    }
 }
 
 const createTodoItem = (title, description, dueDate, priority) => {
     return new TodoItem(title, description, dueDate, priority);
 };
 
-export default {createTodoItem};
+export default {createTodoItem, TodoItem};

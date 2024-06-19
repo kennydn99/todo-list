@@ -1,6 +1,8 @@
 import todoitem from "./todoitem";
+import { saveToLocalStorage, loadFromLocalStorage } from "./storage";
 
 let lists = [];
+
 let allTasksView = false;
 
 class TodoList {
@@ -12,19 +14,40 @@ class TodoList {
 
     addTodoItem(task) {
         this.taskList.push(task);
+        saveToLocalStorage(lists);
     }
 
     removeTodoItem(task) {
         const index = this.taskList.indexOf(task);
         if (index > -1) {
             this.taskList.splice(index, 1);
+            saveToLocalStorage(lists);
         }
     }
+
+    toJSON() {
+        return {
+            id: this.id,
+            name: this.name,
+            taskList: this.taskList
+        };
+    }
+
+    static fromJSON(json) {
+        const list = new TodoList(json.name);
+        list.id = json.id;
+        list.taskList = json.taskList.map(todoitem.TodoItem.fromJSON);
+        return list;
+    }
 }
+
+lists = loadFromLocalStorage(TodoList);
+console.log('lists = ', lists);
 
 const createTodoList = (name) => {
     const myTodoList = new TodoList(name);
     lists.push(myTodoList);
+    saveToLocalStorage(lists);
 }
 
 const deleteTodoList = (listId) => {
@@ -32,22 +55,28 @@ const deleteTodoList = (listId) => {
     // For now, let's just log a message
     const index = getListIndex(listId);
     console.log(`list index ${index}`);
-    lists.splice(index, 1);
+    if (index !== -1) {
+        lists.splice(index, 1);
+        saveToLocalStorage(lists);
+    }
 }
 
 const updateName = (listId, newName) => {
     const list = getList(listId);
     list.name = newName;
+    saveToLocalStorage(lists);
 }
 
 const addTodoItemtoList = (listId, todoItem) => {
     const list = getList(listId);
     list.addTodoItem(todoItem);
+    saveToLocalStorage(lists);
 }
 
 const removeTodoItemFromList = (listId, todoItem) => {
     const list = getList(listId);
     list.removeTodoItem(todoItem);
+    saveToLocalStorage(lists);
 }
 
 const getListIndex = (listId) => lists.findIndex((list) => list.id === listId);
