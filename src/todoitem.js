@@ -63,6 +63,7 @@ class TodoItem {
 
     static fromJSON(json) {
         const item = new TodoItem(json.title, json.description, json.dueDate, json.priority);
+        console.log('json.complete = :', json.complete)
         item.complete = json.complete;
         item.id = json.id;
         item.dueDate = json.dueDate;

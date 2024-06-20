@@ -8,7 +8,7 @@ import CheckmarkIcon from './assets/checkmark.png';
 import listModule from './todolist';
 import itemModule from './todoitem';
 import {format} from "date-fns";
-
+import { saveToLocalStorage } from "./storage";
 
 const UIController = (() => {
     // Initialize the UI
@@ -375,6 +375,8 @@ const UIController = (() => {
             
             taskDetails.style.textDecoration = 'line-through';
             task.complete = true;
+            //save to local storage
+            saveToLocalStorage(listModule.lists);
         } else {
             checkbox.style.removeProperty('background-image');
             checkbox.style.removeProperty('background-repeat');
@@ -495,14 +497,9 @@ const UIController = (() => {
     const handleDeleteButtonClick = (projectDiv, list) => {
         listModule.deleteTodoList(projectDiv.dataset.listId);
         projectDiv.remove();
-        // const projectsContainer = document.querySelector('.projects');
-        // console.log(projectsContainer.children.length)
-        // const addTaskButton = document.querySelector('.add-task-btn');
-        // if (projectsContainer.children.length === 2) {
-        //     addTaskButton.classList.add('hidden');
-        // }
+        
         if(listModule.lists.length === 0) {
-            handleAllTasksDivClick()
+            handleAllTasksDivClick();
         }
     };
 
@@ -546,6 +543,7 @@ const UIController = (() => {
         // hide add task button
         const addTaskButton = document.querySelector('.add-task-btn');
         addTaskButton.classList.add('hidden');
+        console.log('HIDING ADD TASK Button!')
 
         //uncheck render fo all tasks
 
