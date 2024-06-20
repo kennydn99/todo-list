@@ -4,7 +4,6 @@ const saveToLocalStorage = (lists) => {
     try {
         const serializedData = JSON.stringify(lists.map(list => list.toJSON()));
         localStorage.setItem(STORAGE_KEY, serializedData);
-        console.log(`Saving serialilzedData: ${serializedData} to localStorage`);
     } catch (error) {
         console.error('Error saving to localStorage: ', error);
     }
@@ -16,7 +15,6 @@ const loadFromLocalStorage = (TodoList) => {
         const data = localStorage.getItem(STORAGE_KEY);
         if (data) {
             const parsedData = JSON.parse(data);
-            console.log('loadingFromLocalStorage...returning parsedData: ', parsedData.map(TodoList.fromJSON))
             return parsedData.map(TodoList.fromJSON);
         }
         return [];

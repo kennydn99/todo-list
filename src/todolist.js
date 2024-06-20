@@ -37,13 +37,11 @@ class TodoList {
         const list = new TodoList(json.name);
         list.id = json.id;
         list.taskList = json.taskList.map(todoitem.TodoItem.fromJSON);
-        console.log('From todoList fromJSON....tasklist = ', list.taskList);
         return list;
     }
 }
 
 lists = loadFromLocalStorage(TodoList);
-console.log('lists = ', lists);
 
 const createTodoList = (name) => {
     const myTodoList = new TodoList(name);
@@ -55,7 +53,6 @@ const deleteTodoList = (listId) => {
     // Perform any cleanup or additional actions before deleting the todo item
     // For now, let's just log a message
     const index = getListIndex(listId);
-    console.log(`list index ${index}`);
     if (index !== -1) {
         lists.splice(index, 1);
         saveToLocalStorage(lists);

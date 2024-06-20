@@ -24,6 +24,8 @@ const UIController = (() => {
             renderTodoLists(listModule.lists);
             listModule.lists.forEach(list => renderTodoItems(list));
         }
+
+        listModule.setAllTasksView(true);
     };
 
     // Function to toggle the visibility of the side panel
@@ -456,7 +458,7 @@ const UIController = (() => {
         const projectNameSpan = projectDiv.querySelector('span');
 
         editButton.addEventListener('click', () => handleEditButtonClick(projectDiv, projectNameSpan, editButton, deleteButton, list));
-        deleteButton.addEventListener('click', () => handleDeleteButtonClick(projectDiv, list));
+        deleteButton.addEventListener('click', (e) => handleDeleteButtonClick(e, projectDiv, list));
         projectDiv.addEventListener('click', () => handleProjectDivClick(projectDiv, list));
     };
 
@@ -494,7 +496,8 @@ const UIController = (() => {
     };
 
     // Handle click event for the Delete button
-    const handleDeleteButtonClick = (projectDiv, list) => {
+    const handleDeleteButtonClick = (event, projectDiv, list) => {
+        event.stopPropagation();
         listModule.deleteTodoList(projectDiv.dataset.listId);
         projectDiv.remove();
         
@@ -543,9 +546,6 @@ const UIController = (() => {
         // hide add task button
         const addTaskButton = document.querySelector('.add-task-btn');
         addTaskButton.classList.add('hidden');
-        console.log('HIDING ADD TASK Button!')
-
-        //uncheck render fo all tasks
 
         // render todoitems of each todolist
         const listOfAllProjects = listModule.lists;
@@ -601,7 +601,6 @@ const UIController = (() => {
             selectedList = listModule.getSelectedList();
         } else {
             selectedList = listModule.getListForTask(existingTask);
-            console.log('selectedList: ', selectedList);
         }
         
         // if task has id we update, otherwise its new task

@@ -10,7 +10,10 @@ export default function RenderHomePage() {
 }
 
 function RenderHeader() {
-    const header = document.querySelector('.page-header');
+    const body = document.body;
+
+    const header = document.createElement('header');
+    header.classList.add('page-header');
 
     const menu = document.createElement('div');
     menu.classList.add('menu');
@@ -45,6 +48,8 @@ function RenderHeader() {
     header.appendChild(menu);
     header.appendChild(logoSection);
     header.appendChild(toggleTheme);
+
+    body.appendChild(header);
 }
 
 function RenderContent() {
@@ -70,6 +75,7 @@ function RenderContent() {
     const allTasksImage = document.createElement('img');
     allTasksImage.src = allTasksIcon;
     const allTasksSpan = document.createElement('span');
+    allTasksSpan.classList.add('.all-tasks-span');
     allTasksSpan.textContent = 'The Needful';
     allTasksList.appendChild(allTasksImage);
     allTasksList.appendChild(allTasksSpan);
