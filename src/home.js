@@ -1,8 +1,7 @@
 import menuIcon from './assets/menu.png';
 import logoIcon from  './assets/logo.png';
 import moonIcon from './assets/moon.png';
-import allTasksIcon from './assets/alltasks.png'
-
+import allTasksIcon from './assets/alltasks.png';
 
 export default function RenderHomePage() {
     RenderHeader();

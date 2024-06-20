@@ -34,6 +34,7 @@ header {
     padding: 20px;
     display: flex;
     align-items: center;
+    margin-bottom: 16px;
 }
 
 .menu span, .theme span {
@@ -80,10 +81,6 @@ header {
     border-bottom: 5px #3F51B5 solid;
 }
 
-.hidden {
-    display: none;
-}
-
 .project-form img {
     padding-bottom: 2px;
 }
@@ -113,6 +110,11 @@ header {
 
 .project-div:hover, .all-tasks-div:hover {
     background-color: #e9e9e9;
+    cursor: pointer;
+}
+
+.add-task-btn:hover, .add-project-btn:hover {
+    background-color: #90CAF9;
     cursor: pointer;
 }
 
@@ -263,4 +265,42 @@ textarea {
     display: flex;
     gap: 8px;
     margin-right: 8px;
+}
+
+.projects {
+    display: flex;
+    flex-direction: column;
+}
+
+.add-project-btn, .add-task-btn {
+    display: flex;
+    justify-content: center;
+    height: 30px;
+    align-self: center;
+    align-items: center;
+    border: none;
+    border-radius: 10px;
+    width: 200px;
+}
+
+.add-task-btn {
+    background-color: #fffefe;
+}
+
+.add-project-btn {
+    background-color: #e9e9e9;
+    margin-bottom: 8px;
+}
+
+.project-form-buttons button, .project-btn-container button {
+    border: 1px black solid;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: none;
+    padding: 5px;
+    background-color: #e9e9e9;
+}
+
+.hidden {
+    display: none;
 }
