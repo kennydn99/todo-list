@@ -15,30 +15,42 @@ const UIController = (() => {
     const init = () => {
         // Render the home page content
         RenderHomePage();
-        // Set up the side panel toggle functionality
-        ToggleSidePanel();
-        // Set up other necessary event listeners
-        setupEventListeners();
         //render todolists from local storage if present
         if(!listModule.lists.length == 0) {
             renderTodoLists(listModule.lists);
             listModule.lists.forEach(list => renderTodoItems(list));
         }
+        // Set up other necessary event listeners
+        setupEventListeners();
+
+        // Apply dark mode if it was previously enabled
+        // Apply saved theme preference
+        const darkThemeEnabled = JSON.parse(localStorage.getItem('dark-theme'));
+        if (darkThemeEnabled) {
+            document.body.classList.add('dark-theme');
+            document.querySelector('.side-panel').classList.add('dark-theme');
+            applyDarkThemeStyling();
+        }
 
         listModule.setAllTasksView(true);
     };
 
-    // Function to toggle the visibility of the side panel
-    const ToggleSidePanel = () => {
+    // Set up event listeners for various UI elements
+    const setupEventListeners = () => {
         const sidePanel = document.querySelector('.side-panel');
         const menuButton = document.querySelector('.toggle-menu');
         menuButton.addEventListener('click', () => {
             sidePanel.classList.toggle('hidden');
         });
-    };
 
-    // Set up event listeners for various UI elements
-    const setupEventListeners = () => {
+        const themeButton = document.querySelector('.theme-span');
+        themeButton.addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+            sidePanel.classList.toggle('dark-theme');
+            applyDarkThemeStyling();
+            localStorage.setItem('dark-theme', document.body.classList.contains('dark-theme'));
+        });
+
         const addProjectButton = document.querySelector('.add-project-btn');
         addProjectButton.addEventListener('click', handleAddProjectClick);
 
@@ -49,6 +61,20 @@ const UIController = (() => {
         const allTasksDiv = document.querySelector('.all-tasks-div');
         allTasksDiv.addEventListener('click', handleAllTasksDivClick);
     };
+
+    const applyDarkThemeStyling = () => {
+        const allLabels = document.querySelectorAll('label');
+        const taskModalContent = document.querySelector('.modal-content');
+
+        if (isTaskModalOpen) {
+
+            // Apply dark theme to all labels
+            allLabels.forEach(label => label.classList.toggle('dark-theme', document.body.classList.contains('dark-theme')));
+            
+            // Apply dark theme to task modals
+            taskModalContent.classList.toggle('dark-theme', document.body.classList.contains('dark-theme'));
+        }
+    }
 
     // Flag to track if the project form is open
     let isProjectFormOpen = false;
@@ -147,6 +173,15 @@ const UIController = (() => {
         modalButtonContainer.appendChild(submitTaskButton);
         modalButtonContainer.appendChild(cancelTaskButton);
 
+        // // Apply dark mode to labels if enabled
+        // if (document.body.classList.contains('dark-theme')) {
+        //     taskTitleLabel.classList.add('dark-theme');
+        //     taskDescriptionLabel.classList.add('dark-theme');
+        //     taskDateLabel.classList.add('dark-theme');
+        //     taskPriorityLabel.classList.add('dark-theme');
+        //     modalContent.classList.add('dark-theme');
+        // }
+
         modalContent.appendChild(taskTitleLabel);
         modalContent.appendChild(taskTitleInput);
         modalContent.appendChild(taskDescriptionLabel);
@@ -165,6 +200,8 @@ const UIController = (() => {
         });
 
         isTaskModalOpen = true;
+
+        applyDarkThemeStyling();
     };
 
     // Create and display the project creation form
