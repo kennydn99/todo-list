@@ -5,6 +5,8 @@ import ProjectImage from './assets/project.png';
 import EditTaskIcon from './assets/editTask.png';
 import DeleteTaskIcon from './assets/deleteTask.png';
 import CheckmarkIcon from './assets/checkmark.png';
+import DarkModeIcon from './assets/moon.png';
+import LightModeIcon from './assets/sun.png';
 import listModule from './todolist';
 import itemModule from './todoitem';
 import {format} from "date-fns";
@@ -31,6 +33,7 @@ const UIController = (() => {
             document.body.classList.add('dark-theme');
             document.querySelector('.side-panel').classList.add('dark-theme');
             applyDarkThemeStyling();
+            updateThemeIcon(darkThemeEnabled);
         }
 
         listModule.setAllTasksView(true);
@@ -46,10 +49,12 @@ const UIController = (() => {
 
         const themeButton = document.querySelector('.theme-span');
         themeButton.addEventListener('click', () => {
+            const darkThemeEnabled = !document.body.classList.contains('dark-theme');
             document.body.classList.toggle('dark-theme');
             sidePanel.classList.toggle('dark-theme');
             applyDarkThemeStyling();
             localStorage.setItem('dark-theme', document.body.classList.contains('dark-theme'));
+            updateThemeIcon(darkThemeEnabled);
         });
 
         const addProjectButton = document.querySelector('.add-project-btn');
@@ -61,6 +66,11 @@ const UIController = (() => {
 
         const allTasksDiv = document.querySelector('.all-tasks-div');
         allTasksDiv.addEventListener('click', handleAllTasksDivClick);
+    };
+    
+    const updateThemeIcon = (isDarkTheme) => {
+        const themeIcon = document.querySelector('.theme-icon');
+        themeIcon.src = isDarkTheme ? LightModeIcon : DarkModeIcon;
     };
 
     const applyDarkThemeStyling = () => {

@@ -39,6 +39,7 @@ function RenderHeader() {
     const toggleTheme = document.createElement('div');
     toggleTheme.classList.add('theme');
     const themeImage = document.createElement('img');
+    themeImage.classList.add('theme-icon');
     themeImage.src = moonIcon;
     const themeSpan = document.createElement('span');
     themeSpan.classList.add('theme-span');
