@@ -19,6 +19,7 @@ const UIController = (() => {
         if(!listModule.lists.length == 0) {
             renderTodoLists(listModule.lists);
             listModule.lists.forEach(list => renderTodoItems(list));
+            applyDarkThemeStyling();
         }
         // Set up other necessary event listeners
         setupEventListeners();
@@ -65,13 +66,16 @@ const UIController = (() => {
     const applyDarkThemeStyling = () => {
         const allLabels = document.querySelectorAll('label');
         const taskModalContent = document.querySelector('.modal-content');
+        const checkboxes = document.querySelectorAll('.checkbox');
+        const taskDateDivs = document.querySelectorAll('.task-date-div');
+        const projectDivBtnContainers = document.querySelectorAll('.project-btn-container');
 
-        if (isTaskModalOpen) {
-
-            // Apply dark theme to all labels
-            allLabels.forEach(label => label.classList.toggle('dark-theme', document.body.classList.contains('dark-theme')));
-            
-            // Apply dark theme to task modals
+        checkboxes.forEach(checkbox => checkbox.classList.toggle('dark-theme', document.body.classList.contains('dark-theme')));
+        taskDateDivs.forEach(dateDiv => dateDiv.classList.toggle('dark-theme', document.body.classList.contains('dark-theme')));
+        projectDivBtnContainers.forEach(btnContainer => btnContainer.classList.toggle('dark-theme', document.body.classList.contains('dark-theme')));
+        
+        allLabels.forEach(label => label.classList.toggle('dark-theme', document.body.classList.contains('dark-theme')));
+        if (taskModalContent) {
             taskModalContent.classList.toggle('dark-theme', document.body.classList.contains('dark-theme'));
         }
     }
@@ -190,6 +194,7 @@ const UIController = (() => {
         modalContent.appendChild(modalButtonContainer);
         taskModal.appendChild(modalContent);
         taskSection.appendChild(taskModal);
+        applyDarkThemeStyling();
 
         // event listener for submitting modal
         submitTaskButton.addEventListener('click', (e) => handleTaskFormSubmit(e, taskTitleInput, taskDescriptionTextArea, taskDate, taskPriority, existingTask, taskDiv));
@@ -201,7 +206,6 @@ const UIController = (() => {
 
         isTaskModalOpen = true;
 
-        applyDarkThemeStyling();
     };
 
     // Create and display the project creation form
@@ -242,6 +246,8 @@ const UIController = (() => {
 
         projects.appendChild(projectForm);
 
+        applyDarkThemeStyling(); 
+
         // Event listener for form submit to create a new project
         projectForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -249,6 +255,7 @@ const UIController = (() => {
             closeProjectForm();
             listModule.createTodoList(projectName);
             renderTodoLists(listModule.lists);
+            applyDarkThemeStyling(); 
         });
 
         // Event listener for Cancel button to close the form
@@ -304,6 +311,7 @@ const UIController = (() => {
         const taskDiv = buildTaskDiv(task);
         taskLi.appendChild(taskDiv);
         taskUl.appendChild(taskLi);
+        applyDarkThemeStyling();
         addTaskEventListeners(taskDiv, task);
     };
 
@@ -434,7 +442,6 @@ const UIController = (() => {
     };
 
     const handleDeleteTaskClick = (taskDiv, task) => {
-        task.deleteTodoItem();
         taskDiv.remove()
         const inAllTasksView = listModule.isAllTasksView();
         if (!inAllTasksView) {

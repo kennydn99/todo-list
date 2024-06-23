@@ -39,16 +39,6 @@ class TodoItem {
         this.priority = newPriority;
     }
 
-    markComplete() {
-        this.complete = true;
-    }
-
-    deleteTodoItem() {
-        // Perform any cleanup or additional actions before deleting the todo item
-        // For now, let's just log a message
-        console.log(`Deleting todo item: ${this.title}`);
-    }
-
     toJSON() {
         return {
             title: this.title,
