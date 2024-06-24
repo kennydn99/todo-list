@@ -2,11 +2,18 @@
 
 import RenderHomePage from "./home";
 import ProjectImage from './assets/project.png';
+import WhiteProjectImage from './assets/white-project.png';
 import EditTaskIcon from './assets/editTask.png';
+import WhiteEditTask from './assets/white-editTask.png';
 import DeleteTaskIcon from './assets/deleteTask.png';
+import WhiteDeleteTask from './assets/white-deleteTask.png';
 import CheckmarkIcon from './assets/checkmark.png';
 import DarkModeIcon from './assets/moon.png';
 import LightModeIcon from './assets/sun.png';
+import BlackMenu from './assets/menu.png';
+import WhiteMenu from './assets/white-menu.png';
+import BlackAllTasks from './assets/alltasks.png';
+import WhiteAllTasks from './assets/white-alltasks.png';
 import listModule from './todolist';
 import itemModule from './todoitem';
 import {format} from "date-fns";
@@ -71,6 +78,16 @@ const UIController = (() => {
     const updateThemeIcon = (isDarkTheme) => {
         const themeIcon = document.querySelector('.theme-icon');
         themeIcon.src = isDarkTheme ? LightModeIcon : DarkModeIcon;
+        const menuIcon = document.querySelector('.menu-icon');
+        menuIcon.src = isDarkTheme ? WhiteMenu : BlackMenu;
+        const allTasksIcon = document.querySelector('.all-tasks-icon');
+        allTasksIcon.src = isDarkTheme ? WhiteAllTasks : BlackAllTasks;
+        const projectIcons = document.querySelectorAll('.project-icon');
+        projectIcons.forEach(projectIcon => projectIcon.src = isDarkTheme ? WhiteProjectImage : ProjectImage);
+        const editTaskIcons = document.querySelectorAll('.edit-task-icon');
+        editTaskIcons.forEach(editIcon => editIcon.src = isDarkTheme ? WhiteEditTask : EditTaskIcon);
+        const deleteTaskIcons = document.querySelectorAll('.del-task-icon');
+        deleteTaskIcons.forEach(delIcon => delIcon.src = isDarkTheme ? WhiteDeleteTask : DeleteTaskIcon);
     };
 
     const applyDarkThemeStyling = () => {
@@ -87,6 +104,8 @@ const UIController = (() => {
         allLabels.forEach(label => label.classList.toggle('dark-theme', document.body.classList.contains('dark-theme')));
         if (taskModalContent) {
             taskModalContent.classList.toggle('dark-theme', document.body.classList.contains('dark-theme'));
+            const modalButtons = taskModalContent.querySelectorAll('button');
+            modalButtons.forEach(modalButton => modalButton.classList.toggle('dark-theme', document.body.classList.contains('dark-theme')));
         }
     }
 
@@ -124,7 +143,7 @@ const UIController = (() => {
         const taskTitleInput = document.createElement('input');
         taskTitleInput.required = true;
         taskTitleInput.id = 'task-title';
-        taskTitleInput.placeholder = 'Enter Task Name...';
+        taskTitleInput.placeholder = 'what do you need to do...?';
         if (existingTask) taskTitleInput.value = existingTask.title;
         const taskTitleLabel = document.createElement('label');
         taskTitleLabel.textContent = 'Title:';
@@ -132,7 +151,7 @@ const UIController = (() => {
 
         // Description
         const taskDescriptionTextArea = document.createElement('textarea');
-        taskDescriptionTextArea.placeholder = 'Enter Task Description Here...';
+        taskDescriptionTextArea.placeholder = 'enter task description here...';
         if (existingTask) taskDescriptionTextArea.value = existingTask.description;
         const taskDescriptionLabel = document.createElement('label');
         taskDescriptionLabel.textContent = 'Description:';
@@ -163,7 +182,7 @@ const UIController = (() => {
         taskPriorityLabel.textContent = 'Priority:';
         const taskPriority = document.createElement('select');
         taskPriority.id = 'task-priority-select';
-        const priorities = ['Low', 'Medium', 'High'];
+        const priorities = ['low', 'medium', 'high'];
         priorities.forEach(priority => {
             const option = document.createElement('option');
             option.value = priority;
@@ -186,15 +205,6 @@ const UIController = (() => {
         cancelTaskButton.textContent = 'Cancel';
         modalButtonContainer.appendChild(submitTaskButton);
         modalButtonContainer.appendChild(cancelTaskButton);
-
-        // // Apply dark mode to labels if enabled
-        // if (document.body.classList.contains('dark-theme')) {
-        //     taskTitleLabel.classList.add('dark-theme');
-        //     taskDescriptionLabel.classList.add('dark-theme');
-        //     taskDateLabel.classList.add('dark-theme');
-        //     taskPriorityLabel.classList.add('dark-theme');
-        //     modalContent.classList.add('dark-theme');
-        // }
 
         modalContent.appendChild(taskTitleLabel);
         modalContent.appendChild(taskTitleInput);
@@ -228,13 +238,14 @@ const UIController = (() => {
 
         // Create and add project icon
         const projectIcon = document.createElement('img');
+        projectIcon.classList.add('project-icon');
         projectIcon.src = ProjectImage;
         projectForm.appendChild(projectIcon);
 
         // Create and add input field for project name
         const inputField = document.createElement('div');
         const projectInput = document.createElement('input');
-        projectInput.placeholder = 'Name';
+        projectInput.placeholder = 'project name';
         projectInput.required = true;
         inputField.appendChild(projectInput);
 
@@ -257,6 +268,7 @@ const UIController = (() => {
         projects.appendChild(projectForm);
 
         applyDarkThemeStyling(); 
+        updateThemeIcon(document.body.classList.contains('dark-theme'));
 
         // Event listener for form submit to create a new project
         projectForm.addEventListener('submit', (e) => {
@@ -322,6 +334,7 @@ const UIController = (() => {
         taskLi.appendChild(taskDiv);
         taskUl.appendChild(taskLi);
         applyDarkThemeStyling();
+        updateThemeIcon(document.body.classList.contains('dark-theme'));
         addTaskEventListeners(taskDiv, task);
     };
 
@@ -335,15 +348,15 @@ const UIController = (() => {
         const taskPriorityColor = document.createElement('div');
         taskPriorityColor.classList.add('task-priority-color');
         switch(task.priority) {
-            case "Low": 
+            case "low": 
                 taskPriorityColor.style.borderColor = '#28a745';
                 taskDiv.style.borderColor = '#28a745';
                 break;
-            case "Medium": 
+            case "medium": 
                 taskPriorityColor.style.borderColor = '#fd7e14';
                 taskDiv.style.borderColor = '#fd7e14';
                 break;
-            case "High": 
+            case "high": 
                 taskPriorityColor.style.borderColor = '#dc3545';
                 taskDiv.style.borderColor = '#dc3545';
                 break;
@@ -376,11 +389,13 @@ const UIController = (() => {
         const editTask = document.createElement('span');
         editTask.classList.add('edit-task');
         const editTaskImage = document.createElement('img');
+        editTaskImage.classList.add('edit-task-icon');
         editTaskImage.src = EditTaskIcon;
         editTask.appendChild(editTaskImage);
         const deleteTask = document.createElement('span');
         deleteTask.classList.add('delete-task');
         const deleteTaskImage = document.createElement('img');
+        deleteTaskImage.classList.add('del-task-icon');
         deleteTaskImage.src = DeleteTaskIcon;
         deleteTask.appendChild(deleteTaskImage);
         optionsDiv.appendChild(editTask);
@@ -469,6 +484,7 @@ const UIController = (() => {
         const projectsContainer = document.querySelector('.projects');
         const projectDiv = buildProjectDiv(list);
         projectsContainer.appendChild(projectDiv);
+        updateThemeIcon(document.body.classList.contains('dark-theme'));
         addProjectEventListeners(projectDiv, list);
     };
 
@@ -480,6 +496,7 @@ const UIController = (() => {
 
         // Create and add project icon
         const projectIcon = document.createElement('img');
+        projectIcon.classList.add('project-icon');
         projectIcon.src = ProjectImage;
         projectDiv.appendChild(projectIcon);
 
@@ -586,6 +603,8 @@ const UIController = (() => {
 
     // Handle click event for all tasks (the Needful)
     const handleAllTasksDivClick = () => {
+        closeTaskModal();
+
         unselectAllProjectDivs();
         // make the all-task-div styled
         const allTasksDiv = document.querySelector('.all-tasks-div');

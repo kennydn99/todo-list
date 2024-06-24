@@ -6,6 +6,7 @@ import allTasksIcon from './assets/alltasks.png';
 export default function RenderHomePage() {
     RenderHeader();
     RenderContent();
+    RenderFooter();
 }
 
 function RenderHeader() {
@@ -17,6 +18,7 @@ function RenderHeader() {
     const menu = document.createElement('div');
     menu.classList.add('menu');
     const menuImage = document.createElement('img');
+    menuImage.classList.add('menu-icon');
     menuImage.src = menuIcon;
     const menuSpan = document.createElement('span');
     menuSpan.classList.add('toggle-menu');
@@ -74,6 +76,7 @@ function RenderContent() {
     allTasksList.classList.add('all-tasks-div');
     allTasksList.classList.add('selected-project');
     const allTasksImage = document.createElement('img');
+    allTasksImage.classList.add('all-tasks-icon');
     allTasksImage.src = allTasksIcon;
     const allTasksSpan = document.createElement('span');
     allTasksSpan.classList.add('.all-tasks-span');
@@ -121,4 +124,14 @@ function RenderContent() {
     content.appendChild(mainPanel);
 
     body.appendChild(content);
+}
+
+function RenderFooter() {
+    const body = document.body;
+
+    const footer = document.createElement('footer');
+    const iconCred = document.createElement('div');
+    iconCred.innerHTML = 'Icons by <a target="_blank" href="https://icons8.com">Icons8</a> | 2024 © kennydn99';
+    footer.appendChild(iconCred);
+    body.appendChild(footer);
 }

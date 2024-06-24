@@ -13,6 +13,18 @@ body {
     font-family: 'MyFont';
 }
 
+footer {
+    display: flex;
+    justify-content: center;
+    height: 30px;
+    align-items: center;
+    border-top: 5px #90CAF9 solid;
+}
+
+a {
+    color:#90CAF9;
+}
+
 button {
     font-family: 'MyFont';
 }
@@ -351,7 +363,7 @@ body.dark-theme {
     background-color: #4f5459;
 }
 
-label.dark-theme, .project-btn-container.dark-theme button {
+label.dark-theme, .project-btn-container.dark-theme button, button.dark-theme {
     color: #fff;
 }
 
